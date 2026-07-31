@@ -1,0 +1,132 @@
+<!-- Floating AI Button -->
+<button id="chat-toggle" class="cnai-toggle">
+    🤖
+</button>
+
+<!-- Chat Window -->
+<div id="chat-window" class="cnai-window">
+
+    <div class="cnai-header">
+        <div class="cnai-title">
+            <div class="cnai-avatar">AI</div>
+
+            <div>
+                <h4 class="cnai-heading">Companiesnext AI</h4>
+                <span class="cnai-status">Online</span>
+            </div>
+        </div>
+
+        <button id="chat-close" class="cnai-close">
+            ✕
+        </button>
+    </div>
+
+    <div class="cnai-body">
+
+        <!-- Lead Capture Form -->
+        <form id="cnai-lead-form" class="cnai-lead-form" novalidate>
+
+            <p class="cnai-lead-intro">
+                Hello 👋<br>
+                Please share a few details before we start chatting.
+            </p>
+
+            <div class="cnai-field">
+                <label class="cnai-label" for="cnai-name">Name</label>
+                <input
+                    id="cnai-name"
+                    class="cnai-lead-input"
+                    type="text"
+                    placeholder="Your full name"
+                    autocomplete="name"
+                />
+            </div>
+
+            <div class="cnai-field">
+                <label class="cnai-label" for="cnai-email">Email</label>
+                <input
+                    id="cnai-email"
+                    class="cnai-lead-input"
+                    type="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                />
+            </div>
+
+            <div class="cnai-field">
+                <label class="cnai-label" for="cnai-contact">Contact Number</label>
+                <div class="cnai-contact-row">
+
+                    <div id="cnai-country-picker" class="cnai-country-picker">
+
+                        <button
+                            id="cnai-country-toggle"
+                            class="cnai-country-toggle"
+                            type="button"
+                            aria-haspopup="listbox"
+                            aria-expanded="false"
+                        >
+                            <span id="cnai-country-flag" class="cnai-country-flag">
+                                <img src="https://flagcdn.com/24x18/in.png" alt="India flag" class="cnai-flag-img cnai-flag-img-toggle" />
+                            </span>
+                            <span class="cnai-country-caret">▾</span>
+                        </button>
+
+                        <div id="cnai-country-dropdown" class="cnai-country-dropdown">
+
+                            <input
+                                id="cnai-country-search"
+                                class="cnai-country-search"
+                                type="text"
+                                placeholder="Search"
+                                autocomplete="off"
+                            />
+
+                            <ul id="cnai-country-list" class="cnai-country-list" role="listbox"></ul>
+
+                        </div>
+
+                    </div>
+
+                    <div class="cnai-contact-input-wrap">
+                        <span id="cnai-dial-code" class="cnai-dial-code">+91</span>
+                        <input
+                            id="cnai-contact"
+                            class="cnai-contact-input"
+                            type="tel"
+                            inputmode="numeric"
+                            maxlength="10"
+                            placeholder="10-digit mobile number"
+                            autocomplete="tel-national"
+                        />
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="cnai-lead-error" class="cnai-lead-error"></div>
+
+            <button id="cnai-lead-submit" class="cnai-lead-submit" type="submit">
+                Start Chat
+            </button>
+
+        </form>
+
+        <!-- Chat Messages -->
+        <div id="cnai-messages" class="cnai-messages"></div>
+
+    </div>
+
+    <div class="cnai-footer">
+
+        <input
+            id="chat-input"
+            class="cnai-input"
+            type="text"
+            placeholder="Ask anything..."
+            disabled
+        />
+
+    </div>
+
+</div>

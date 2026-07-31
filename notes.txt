@@ -1,0 +1,280 @@
+| Layer            | Technology                                            |
+| ---------------- | ----------------------------------------------------- |
+| API              | FastAPI                                               |
+| Validation       | Pydantic                                              |
+| ORM              | SQLAlchemy 2.x                                        |
+| Migrations       | Alembic                                               |
+| Database         | MySQL 8                                               |
+| Authentication   | JWT (OAuth2 Password Bearer if appropriate)           |
+| Background Jobs  | Celery + Redis (or Dramatiq/Arq)                      |
+| Cache            | Redis                                                 |
+| LLM              | LangGraph or native agent orchestration               |
+| Embeddings       | Voyage AI / OpenAI / Gemini                           |
+| Vector DB        | ChromaDB (development), Qdrant or Milvus (production) |
+| Logging          | structlog or Loguru + Python logging                  |
+| Monitoring       | Prometheus + Grafana                                  |
+| Error Tracking   | Sentry                                                |
+| Testing          | pytest                                                |
+| Formatting       | Black                                                 |
+| Linting          | Ruff                                                  |
+| Type Checking    | mypy                                                  |
+| Containerization | Docker                                                |
+| Reverse Proxy    | Nginx                                                 |
+| Process Manager  | Gunicorn + Uvicorn workers                            |
+
+
+chatbot-agent/
+│
+├── app/
+│   │
+│   ├── api/
+│   │   ├── v1/
+│   │   │   ├── chat.py
+│   │   │   ├── auth.py
+│   │   │   ├── thread.py
+│   │   │   ├── health.py
+│   │   │   └── upload.py
+│   │   │
+│   │   └── router.py
+│   │
+│   ├── config/
+│   │   ├── settings.py
+│   │   ├── logging.py
+│   │   ├── database.py
+│   │   └── constants.py
+│   │
+│   ├── agents/
+│   │   ├── chatbot_agent.py
+│   │   ├── router_agent.py
+│   │   ├── sql_agent.py
+│   │   ├── rag_agent.py
+│   │   └── email_agent.py
+│   │
+│   ├── llm/
+│   │   ├── provider.py
+│   │   ├── openai.py
+│   │   ├── anthropic.py
+│   │   ├── gemini.py
+│   │   └── prompts.py
+│   │
+│   ├── tools/
+│   │   ├── database_tool.py
+│   │   ├── email_tool.py
+│   │   ├── calculator_tool.py
+│   │   ├── search_tool.py
+│   │   └── weather_tool.py
+│   │
+│   ├── services/
+│   │   ├── chat_service.py
+│   │   ├── thread_service.py
+│   │   ├── embedding_service.py
+│   │   ├── vector_service.py
+│   │   ├── auth_service.py
+│   │   └── document_service.py
+│   │
+│   ├── repositories/
+│   │   ├── chat_repository.py
+│   │   ├── thread_repository.py
+│   │   ├── user_repository.py
+│   │   └── document_repository.py
+│   │
+│   ├── models/
+│   │   ├── user.py
+│   │   ├── chat_thread.py
+│   │   ├── chat_message.py
+│   │   └── document.py
+│   │
+│   ├── schemas/
+│   │   ├── chat.py
+│   │   ├── auth.py
+│   │   ├── thread.py
+│   │   ├── user.py
+│   │   └── response.py
+│   │
+│   ├── middleware/
+│   │   ├── auth.py
+│   │   ├── request_logger.py
+│   │   ├── rate_limit.py
+│   │   └── exception_handler.py
+│   │
+│   ├── utils/
+│   │   ├── helpers.py
+│   │   ├── tokenizer.py
+│   │   ├── file_parser.py
+│   │   ├── chunking.py
+│   │   └── validators.py
+│   │
+│   ├── workers/
+│   │   ├── embedding_worker.py
+│   │   ├── email_worker.py
+│   │   └── cleanup_worker.py
+│   │
+│   ├── core/
+│   │   ├── security.py
+│   │   ├── dependencies.py
+│   │   └── permissions.py
+│   │
+│   ├── main.py
+│   └── __init__.py
+│
+├── migrations/
+│
+├── tests/
+│   ├── api/
+│   ├── services/
+│   ├── repositories/
+│   └── agents/
+│
+├── scripts/
+│   ├── seed.py
+│   ├── create_admin.py
+│   └── migrate.py
+│
+├── storage/
+│   ├── uploads/
+│   ├── temp/
+│   └── logs/
+│
+├── docker/
+│   ├── Dockerfile
+│   └── docker-compose.yml
+│
+├── requirements.txt
+├── .env
+├── .env.example
+├── README.md
+└── .gitignore
+
+Production (recommended)
+-For production, don't use python run.py. Start Uvicorn (or Gunicorn + Uvicorn workers) directly:
+>uvicorn app.main:app --host 0.0.0.0 --port 8000
+or with multiple workers:
+>uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+Note: reload=True and workers>1 cannot be used together. reload=True is for development only.
+
+Qdrant vector-DB Setup:
+docker pull qdrant/qdrant
+docker run -d --name qdrant -p 6333:6333 -p 6334:6334 -v qdrant_storage:/qdrant/storage qdrant/qdrant
+docker ps
+http://localhost:6333/dashboard
+
+Install Python packages:
+pip install qdrant-client
+pip install langchain-qdrant
+
+Embeddings:
+pip install voyageai
+
+Pdf Extracter:
+pip install pymupdf
+
+>python -m venv venv
+>venv\Scripts\activate
+>pip install -r requirements.txt
+>python run.py
+
+RabbitMQ:
+>docker pull rabbitmq:4-management
+>docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
+
+Add the below script in Laravel that load html/css through widget/chatbot.js file.
+<script src="http://127.0.0.1:8001/widget/chatbot.js" data-theme-color="#8B1A2E"></script>
+
+files = [
+    'storage\\websites\\companiesnext\\001_companiesnext.txt',
+    'storage\\websites\\companiesnext\\about-us.txt',
+    'storage\\websites\\companiesnext\\accounting-service-india.txt',
+    'storage\\websites\\companiesnext\\acquisition-valuation.txt',
+    'storage\\websites\\companiesnext\\all-compliance.txt',
+    'storage\\websites\\companiesnext\\annual-compliance-service.txt',
+    'storage\\websites\\companiesnext\\appointment-of-director.txt',
+    'storage\\websites\\companiesnext\\ask-a-free-question.txt',
+    'storage\\websites\\companiesnext\\blogs.txt',
+    'storage\\websites\\companiesnext\\branch-office-registration.txt',
+    'storage\\websites\\companiesnext\\brand-intangible-asset-valuation.txt',
+    'storage\\websites\\companiesnext\\business-deck-information-memorandum.txt',
+    'storage\\websites\\companiesnext\\business-valuation-services.txt',
+    'storage\\websites\\companiesnext\\business-valuation.txt',
+    'storage\\websites\\companiesnext\\canadian-manufacturer-india-entry-greater-noida.txt',
+    'storage\\websites\\companiesnext\\case-studies.txt',
+    'storage\\websites\\companiesnext\\change-of-objects.txt',
+    'storage\\websites\\companiesnext\\company-registration-in-india-by-foreigners.txt',
+    'storage\\websites\\companiesnext\\compare-business-entities.txt',
+    'storage\\websites\\companiesnext\\contact-us.txt',
+    'storage\\websites\\companiesnext\\dcf-valuation-general-info.txt',
+    'storage\\websites\\companiesnext\\direct-tax.txt',
+    'storage\\websites\\companiesnext\\due-diligence-service-in-india.txt',
+    'storage\\websites\\companiesnext\\esop-advisory-services-india.txt',
+    'storage\\websites\\companiesnext\\esop-valuation.txt',
+    'storage\\websites\\companiesnext\\fairness-opinion.txt',
+    'storage\\websites\\companiesnext\\fcra-registration.txt',
+    'storage\\websites\\companiesnext\\fema-consulting.txt',
+    'storage\\websites\\companiesnext\\financial-modelling.txt',
+    'storage\\websites\\companiesnext\\financial-securities-valuation.txt',
+    'storage\\websites\\companiesnext\\find-expert.txt',
+    'storage\\websites\\companiesnext\\founder_agreement.txt',
+    'storage\\websites\\companiesnext\\franchise-agreement.txt',
+    'storage\\websites\\companiesnext\\free-legal-advice.txt',
+    'storage\\websites\\companiesnext\\gobal_capability_centre.txt',
+    'storage\\websites\\companiesnext\\goods-and-service-tax.txt',
+    'storage\\websites\\companiesnext\\gst-registration.txt',
+    'storage\\websites\\companiesnext\\how-to-select-right-business-structure-for-business-in-india.txt',
+    'storage\\websites\\companiesnext\\ibc-valuation.txt',
+    'storage\\websites\\companiesnext\\impairment-study-intangible-assets-goodwill.txt',
+    'storage\\websites\\companiesnext\\import-export-code-registration.txt',
+    'storage\\websites\\companiesnext\\infrastructure-specialized-asset-valuation.txt',
+    'storage\\websites\\companiesnext\\internal-audit.txt',
+    'storage\\websites\\companiesnext\\ITR-Filling.txt',
+    'storage\\websites\\companiesnext\\joint-venture-agreements-india.txt',
+    'storage\\websites\\companiesnext\\legal-and-tax-structuring.txt',
+    'storage\\websites\\companiesnext\\liaison-office-registration.txt',
+    'storage\\websites\\companiesnext\\llp-registration-resident.txt',
+    'storage\\websites\\companiesnext\\llp-registration.txt',
+    'storage\\websites\\companiesnext\\market-study.txt',
+    'storage\\websites\\companiesnext\\merger-valuation-swap-ratio.txt',
+    'storage\\websites\\companiesnext\\msme-registration.txt',
+    'storage\\websites\\companiesnext\\nidhi-company-registration-india.txt',
+    'storage\\websites\\companiesnext\\one-person-company-registration.txt',
+    'storage\\websites\\companiesnext\\payroll-services.txt',
+
+    'storage\\websites\\companiesnext\\portfolio-valuation.txt',
+    'storage\\websites\\companiesnext\\portugal-company-india-entry-gurgaon.txt',
+    'storage\\websites\\companiesnext\\privacy-policy.txt',
+    'storage\\websites\\companiesnext\\private-limited-company-registration-resident.txt',
+    'storage\\websites\\companiesnext\\private-limited-company-registration.txt',
+    'storage\\websites\\companiesnext\\procedure-of-increase-in-authorized-share-capital-of-a-private-limited-company.txt',
+    'storage\\websites\\companiesnext\\process-for-change-of-name-of-a-company.txt',
+    'storage\\websites\\companiesnext\\project-office-registration.txt',
+    'storage\\websites\\companiesnext\\public-limited-company-registration-resident.txt',
+    'storage\\websites\\companiesnext\\public-limited-company-registration.txt',
+    'storage\\websites\\companiesnext\\purchase-price-allocation.txt',
+    'storage\\websites\\companiesnext\\question-n-answer.txt',
+    'storage\\websites\\companiesnext\\quick-value-general-info.txt',
+    'storage\\websites\\companiesnext\\recent-news.txt',
+    'storage\\websites\\companiesnext\\refer-and-earn.txt',
+    'storage\\websites\\companiesnext\\refund-claims-under-gst.txt',
+    'storage\\websites\\companiesnext\\refund-policy.txt',
+    'storage\\websites\\companiesnext\\regulatory-approvals-registration-requirements-in-india.txt',
+    'storage\\websites\\companiesnext\\secretarial-and-fema-services.txt',
+    'storage\\websites\\companiesnext\\section-8-company-registration-in-india.txt',
+    
+    'storage\\websites\\companiesnext\\share-holders-agreement-sha-india.txt',
+    'storage\\websites\\companiesnext\\share-purchase-agreement-spa-india.txt',
+    'storage\\websites\\companiesnext\\share-subscription-agreement-ssa-india.txt',
+    'storage\\websites\\companiesnext\\sign-up.txt',
+    'storage\\websites\\companiesnext\\sitemap.txt',
+    'storage\\websites\\companiesnext\\south-african-manufacturer-india-entry-mumbai.txt',
+    'storage\\websites\\companiesnext\\start-up-registration.txt',
+    'storage\\websites\\companiesnext\\startup-india-benefits-and-registration.txt',
+    'storage\\websites\\companiesnext\\startup-valuation.txt',
+    'storage\\websites\\companiesnext\\strike-off-a-company.txt',
+    'storage\\websites\\companiesnext\\talk-to-an-expert.txt',
+    'storage\\websites\\companiesnext\\technical_accounting.txt',
+    'storage\\websites\\companiesnext\\terms-and-conditions.txt',
+    'storage\\websites\\companiesnext\\trademark-registration-everything-you-need-to-know.txt',
+    'storage\\websites\\companiesnext\\trademark-registration.txt',
+    'storage\\websites\\companiesnext\\valuation-services.txt',
+    'storage\\websites\\companiesnext\\virtual-cfo-services.txt',
+    'storage\\websites\\companiesnext\\wholly-owned-subsidiary-company-registration-india.txt',
+    'storage\\websites\\companiesnext\\why-india-is-considered-as-the-most-preferred-destination-for-business.txt'
+]

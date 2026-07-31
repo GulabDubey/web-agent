@@ -1,0 +1,852 @@
+/*
+ * Namespaced under #chatbot-root / .cnai-root so these rules can never
+ * leak onto the host page, and the host page's own CSS (resets, bare
+ * tag selectors, utility frameworks) can never bleed into the widget.
+ */
+
+#chatbot-root.cnai-root,
+#chatbot-root.cnai-root *{
+    all: initial !important;
+    box-sizing: border-box !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    line-height: normal !important;
+    text-align: left !important;
+    direction: ltr !important;
+}
+
+#chatbot-root.cnai-root{
+    display: block !important;
+}
+
+#chatbot-root.cnai-root *,
+#chatbot-root.cnai-root *::before,
+#chatbot-root.cnai-root *::after{
+    box-sizing: border-box !important;
+}
+
+/* Floating Button */
+
+#chatbot-root.cnai-root .cnai-toggle{
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    position: fixed !important;
+    right: 25px !important;
+    bottom: 25px !important;
+
+    width: 65px !important;
+    height: 65px !important;
+
+    border: none !important;
+    border-radius: 50% !important;
+
+    background: var(--theme-color) !important;
+    color: #fff !important;
+
+    font-size: 30px !important;
+    cursor: pointer !important;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.2) !important;
+
+    transition: .3s !important;
+    z-index: 2147483000 !important;
+}
+
+#chatbot-root.cnai-root .cnai-toggle:hover{
+    transform: scale(1.08) !important;
+}
+
+/* Chat Window */
+
+#chatbot-root.cnai-root .cnai-window{
+
+    /*
+     * display: none (not opacity/visibility) is what actually keeps this
+     * closed. The global "all: initial !important" reset above re-applies
+     * to every descendant individually, which forces each child's own
+     * visibility/pointer-events back to visible/auto and overrides
+     * whatever is inherited from this element - so an invisible (opacity:0)
+     * window still left its inputs focusable/autofillable. display: none
+     * removes the whole subtree from layout/hit-testing/focus and can't be
+     * overridden by a child, so it's the only property that reliably hides
+     * AND disables everything inside at once.
+     */
+    display: none !important;
+
+    position: fixed !important;
+
+    right: 25px !important;
+    bottom: 100px !important;
+
+    width: 370px !important;
+    height: 500px !important;
+    max-width: calc(100vw - 30px) !important;
+    max-height: calc(100vh - 130px) !important;
+
+    background: #fff !important;
+
+    border-radius: 20px !important;
+
+    overflow: hidden !important;
+
+    flex-direction: column !important;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,.15) !important;
+
+    transform: translateY(20px) !important;
+    opacity: 0 !important;
+
+    transition: opacity .3s, transform .3s !important;
+
+    z-index: 2147483000 !important;
+}
+
+#chatbot-root.cnai-root .cnai-window.cnai-visible{
+    display: flex !important;
+}
+
+#chatbot-root.cnai-root .cnai-window.show{
+
+    transform: translateY(0) !important;
+
+    opacity: 1 !important;
+
+}
+
+#chatbot-root.cnai-root .cnai-toggle{
+    pointer-events: auto !important;
+}
+
+/* Header */
+
+#chatbot-root.cnai-root .cnai-header{
+
+    background: var(--theme-color) !important;
+    color: #fff !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    padding: 18px !important;
+}
+
+#chatbot-root.cnai-root .cnai-title{
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+#chatbot-root.cnai-root .cnai-avatar{
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 45px !important;
+    height: 45px !important;
+
+    border-radius: 50% !important;
+
+    background: #fff !important;
+    color: var(--theme-color) !important;
+
+    font-weight: bold !important;
+}
+
+#chatbot-root.cnai-root .cnai-heading{
+    display: block !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: white !important;
+}
+
+#chatbot-root.cnai-root .cnai-status{
+    display: block !important;
+    font-size: 12px !important;
+    opacity: .8 !important;
+    color: white !important;
+}
+
+#chatbot-root.cnai-root .cnai-close{
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: none !important;
+    background: none !important;
+    color: #fff !important;
+
+    font-size: 22px !important;
+    cursor: pointer !important;
+}
+
+/* Body */
+
+#chatbot-root.cnai-root .cnai-body{
+
+    flex: 1 !important;
+
+    background: #f7f8fc !important;
+
+    padding: 20px !important;
+
+    overflow-y: auto !important;
+}
+
+/* Lead Capture Form */
+
+#chatbot-root.cnai-root .cnai-lead-form{
+
+    display: none !important;
+
+    flex-direction: column !important;
+
+    gap: 14px !important;
+}
+
+#chatbot-root.cnai-root .cnai-window.cnai-lead-active .cnai-lead-form{
+    display: flex !important;
+}
+
+#chatbot-root.cnai-root .cnai-window.cnai-lead-active .cnai-messages,
+#chatbot-root.cnai-root .cnai-window.cnai-lead-active .cnai-footer{
+    display: none !important;
+}
+
+#chatbot-root.cnai-root .cnai-lead-intro{
+
+    display: block !important;
+
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: #222 !important;
+
+    margin-bottom: 4px !important;
+}
+
+#chatbot-root.cnai-root .cnai-field{
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    gap: 6px !important;
+}
+
+#chatbot-root.cnai-root .cnai-label{
+
+    display: block !important;
+
+    font-size: 12px !important;
+    font-weight: bold !important;
+    color: #555 !important;
+}
+
+#chatbot-root.cnai-root .cnai-lead-input{
+
+    display: block !important;
+
+    width: 100% !important;
+
+    border: 1px solid #ddd !important;
+
+    border-radius: 10px !important;
+
+    padding: 10px 14px !important;
+
+    outline: none !important;
+
+    font-size: 14px !important;
+    color: #222 !important;
+    background: #fff !important;
+}
+
+#chatbot-root.cnai-root .cnai-lead-input:focus{
+    border-color: var(--theme-color) !important;
+}
+
+#chatbot-root.cnai-root .cnai-contact-row{
+
+    display: flex !important;
+
+    position: relative !important;
+
+    gap: 8px !important;
+}
+
+/* Country Flag Picker */
+
+#chatbot-root.cnai-root .cnai-country-picker{
+
+    position: relative !important;
+
+    flex: 0 0 auto !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-toggle{
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 4px !important;
+
+    width: 54px !important;
+    height: 100% !important;
+
+    min-height: 42px !important;
+
+    border: 1px solid #ddd !important;
+
+    border-radius: 10px !important;
+
+    background: #fff !important;
+
+    font-size: 20px !important;
+    line-height: 1 !important;
+
+    cursor: pointer !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-toggle:focus{
+    border-color: var(--theme-color) !important;
+    outline: none !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-caret{
+
+    display: block !important;
+
+    font-size: 10px !important;
+    color: #777 !important;
+}
+
+/* Flag Images */
+
+#chatbot-root.cnai-root .cnai-flag-img{
+
+    display: block !important;
+
+    width: 20px !important;
+    height: 15px !important;
+
+    object-fit: cover !important;
+
+    border-radius: 2px !important;
+
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1) !important;
+}
+
+#chatbot-root.cnai-root .cnai-flag-img-toggle{
+    width: 24px !important;
+    height: 18px !important;
+}
+
+#chatbot-root.cnai-root .cnai-flag-fallback{
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-shadow: none !important;
+
+    background: #eee !important;
+    color: #555 !important;
+
+    font-size: 8px !important;
+    font-weight: bold !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-dropdown{
+
+    display: none !important;
+    flex-direction: column !important;
+
+    position: absolute !important;
+    top: calc(100% + 6px) !important;
+    left: 0 !important;
+
+    width: 260px !important;
+    max-width: 80vw !important;
+    max-height: 260px !important;
+
+    background: #fff !important;
+
+    border: 1px solid #eee !important;
+
+    border-radius: 12px !important;
+
+    box-shadow: 0 15px 35px rgba(0,0,0,.15) !important;
+
+    overflow: hidden !important;
+
+    z-index: 2147483001 !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-dropdown.show{
+    display: flex !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-search{
+
+    display: block !important;
+
+    margin: 10px 10px 6px !important;
+
+    border: 1px solid #ddd !important;
+
+    border-radius: 8px !important;
+
+    padding: 8px 12px !important;
+
+    outline: none !important;
+
+    font-size: 13px !important;
+    color: #222 !important;
+    background: #fff !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-search:focus{
+    border-color: var(--theme-color) !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-list{
+
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 0 8px !important;
+
+    list-style: none !important;
+
+    overflow-y: auto !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-list li{
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 10px !important;
+
+    padding: 8px 14px !important;
+
+    font-size: 13px !important;
+    color: #222 !important;
+
+    cursor: pointer !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-list li:hover,
+#chatbot-root.cnai-root .cnai-country-list li.cnai-active{
+    background: #f5f5f7 !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-list .cnai-country-list-flag{
+
+    display: block !important;
+
+    flex: 0 0 auto !important;
+
+    font-size: 17px !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-list .cnai-country-list-name{
+
+    display: block !important;
+
+    flex: 1 !important;
+
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-list .cnai-country-list-dial{
+
+    display: block !important;
+
+    flex: 0 0 auto !important;
+
+    color: #888 !important;
+    font-size: 12px !important;
+}
+
+#chatbot-root.cnai-root .cnai-country-list .cnai-country-empty{
+
+    display: block !important;
+
+    padding: 14px !important;
+
+    font-size: 13px !important;
+    color: #888 !important;
+    text-align: center !important;
+
+    cursor: default !important;
+}
+
+/* Contact Input */
+
+#chatbot-root.cnai-root .cnai-contact-input-wrap{
+
+    display: flex !important;
+    align-items: center !important;
+
+    flex: 1 !important;
+
+    gap: 6px !important;
+
+    border: 1px solid #ddd !important;
+
+    border-radius: 10px !important;
+
+    padding: 0 14px !important;
+
+    background: #fff !important;
+}
+
+#chatbot-root.cnai-root .cnai-contact-input-wrap:focus-within{
+    border-color: var(--theme-color) !important;
+}
+
+#chatbot-root.cnai-root .cnai-dial-code{
+
+    display: block !important;
+
+    flex: 0 0 auto !important;
+
+    font-size: 14px !important;
+    color: #222 !important;
+}
+
+#chatbot-root.cnai-root .cnai-contact-input{
+
+    display: block !important;
+
+    flex: 1 !important;
+
+    min-width: 0 !important;
+
+    border: none !important;
+
+    padding: 10px 0 !important;
+
+    outline: none !important;
+
+    font-size: 14px !important;
+    color: #222 !important;
+    background: transparent !important;
+}
+
+#chatbot-root.cnai-root .cnai-lead-error{
+
+    display: block !important;
+
+    min-height: 16px !important;
+
+    font-size: 12px !important;
+    color: #e5484d !important;
+}
+
+#chatbot-root.cnai-root .cnai-lead-submit{
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: none !important;
+
+    border-radius: 30px !important;
+
+    padding: 12px 18px !important;
+
+    background: var(--theme-color) !important;
+    color: #fff !important;
+
+    font-size: 15px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+
+    transition: .3s !important;
+}
+
+#chatbot-root.cnai-root .cnai-lead-submit:hover{
+    opacity: .9 !important;
+}
+
+#chatbot-root.cnai-root .cnai-lead-submit:disabled{
+    opacity: .6 !important;
+    cursor: not-allowed !important;
+}
+
+#chatbot-root.cnai-root .cnai-messages{
+    display: block !important;
+}
+
+#chatbot-root.cnai-root .cnai-message{
+
+    display: block !important;
+
+    max-width: 80% !important;
+
+    padding: 12px 16px !important;
+
+    border-radius: 15px !important;
+
+    margin-bottom: 15px !important;
+
+    line-height: 1.5 !important;
+    font-size: 14px !important;
+    color: #222 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai{
+
+    background: #fff !important;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.05) !important;
+}
+
+/* Rendered Markdown inside bot messages */
+
+#chatbot-root.cnai-root .cnai-message-ai p{
+    display: block !important;
+    margin: 0 0 10px !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai p:last-child{
+    margin-bottom: 0 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai strong,
+#chatbot-root.cnai-root .cnai-message-ai b{
+    display: inline !important;
+    font-weight: bold !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai em,
+#chatbot-root.cnai-root .cnai-message-ai i{
+    display: inline !important;
+    font-style: italic !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai u{
+    display: inline !important;
+    text-decoration: underline !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai ul,
+#chatbot-root.cnai-root .cnai-message-ai ol{
+    display: block !important;
+    margin: 0 0 10px !important;
+    padding-left: 20px !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai ul{
+    list-style: disc !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai ol{
+    list-style: decimal !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai li{
+    display: list-item !important;
+    margin-bottom: 4px !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai li:last-child{
+    margin-bottom: 0 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai ul ul,
+#chatbot-root.cnai-root .cnai-message-ai ol ol,
+#chatbot-root.cnai-root .cnai-message-ai ul ol,
+#chatbot-root.cnai-root .cnai-message-ai ol ul{
+    margin: 4px 0 0 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai a{
+    display: inline !important;
+    color: var(--theme-color) !important;
+    text-decoration: underline !important;
+    word-break: break-word !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai code{
+    display: inline !important;
+    background: #f1f1f4 !important;
+    border-radius: 4px !important;
+    padding: 2px 5px !important;
+    font-family: "Courier New", Courier, monospace !important;
+    font-size: 13px !important;
+    color: #222 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai pre{
+    display: block !important;
+    background: #f1f1f4 !important;
+    border-radius: 8px !important;
+    padding: 10px 12px !important;
+    margin: 0 0 10px !important;
+    overflow-x: auto !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai pre code{
+    display: block !important;
+    background: none !important;
+    padding: 0 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai blockquote{
+    display: block !important;
+    margin: 0 0 10px !important;
+    padding: 4px 12px !important;
+    border-left: 3px solid var(--theme-color) !important;
+    color: #555 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai h1,
+#chatbot-root.cnai-root .cnai-message-ai h2,
+#chatbot-root.cnai-root .cnai-message-ai h3,
+#chatbot-root.cnai-root .cnai-message-ai h4{
+    display: block !important;
+    margin: 0 0 8px !important;
+    font-weight: bold !important;
+    line-height: 1.3 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai h1{ font-size: 18px !important; }
+#chatbot-root.cnai-root .cnai-message-ai h2{ font-size: 17px !important; }
+#chatbot-root.cnai-root .cnai-message-ai h3{ font-size: 15px !important; }
+#chatbot-root.cnai-root .cnai-message-ai h4{ font-size: 14px !important; }
+
+#chatbot-root.cnai-root .cnai-message-ai hr{
+    display: block !important;
+    border: none !important;
+    border-top: 1px solid #eee !important;
+    margin: 10px 0 !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-ai br{
+    display: block !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-user{
+
+    background: var(--theme-color) !important;
+    color: #fff !important;
+
+    margin-left: auto !important;
+}
+
+#chatbot-root.cnai-root .cnai-message-loading{
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+
+    width: fit-content !important;
+}
+
+#chatbot-root.cnai-root .cnai-dot{
+
+    display: block !important;
+
+    width: 7px !important;
+    height: 7px !important;
+
+    border-radius: 50% !important;
+
+    background: #b5b5b5 !important;
+
+    animation: cnai-dot-blink 1.4s infinite both !important;
+}
+
+#chatbot-root.cnai-root .cnai-dot:nth-child(2){
+    animation-delay: .2s !important;
+}
+
+#chatbot-root.cnai-root .cnai-dot:nth-child(3){
+    animation-delay: .4s !important;
+}
+
+@keyframes cnai-dot-blink{
+    0%, 80%, 100%{
+        opacity: .3;
+        transform: scale(.8);
+    }
+    40%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Footer */
+
+#chatbot-root.cnai-root .cnai-footer{
+
+    display: flex !important;
+
+    padding: 15px !important;
+
+    gap: 10px !important;
+
+    border-top: 1px solid #eee !important;
+}
+
+#chatbot-root.cnai-root .cnai-input{
+
+    display: block !important;
+
+    flex: 1 !important;
+
+    border: 1px solid #ddd !important;
+
+    border-radius: 30px !important;
+
+    padding: 12px 18px !important;
+
+    outline: none !important;
+
+    font-size: 15px !important;
+    color: #222 !important;
+    background: #fff !important;
+}
+
+#chatbot-root.cnai-root .cnai-input:focus{
+
+    border-color: var(--theme-color) !important;
+}
+
+#chatbot-root.cnai-root .cnai-input:disabled{
+
+    opacity: .6 !important;
+    cursor: not-allowed !important;
+}
+
+#chatbot-root.cnai-root .cnai-send{
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 48px !important;
+    height: 48px !important;
+
+    border: none !important;
+
+    border-radius: 50% !important;
+
+    background: var(--theme-color) !important;
+
+    color: #fff !important;
+
+    cursor: pointer !important;
+
+    font-size: 18px !important;
+}

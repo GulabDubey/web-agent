@@ -1,0 +1,5 @@
+>pip install fastapi uvicorn
+>python run.py
+-http://localhost:8000
+-http://localhost:8000/docs # All available APIs (FastAPI)
+-http://localhost:8000/redoc
