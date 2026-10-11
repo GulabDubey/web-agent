@@ -1,0 +1,77 @@
+[ FlaskShop ](http://127.0.0.1:5000/)
+  * [ Home ](http://127.0.0.1:5000/)
+  * [ Products ](http://127.0.0.1:5000/shop/)
+
+
+[ Login ](http://127.0.0.1:5000/auth/login) [ Register ](http://127.0.0.1:5000/auth/register)
+💬 
+AI Assistant ✕
+**Bot:** Hello! How can I help you today? 
+Send
+#  Shop The Latest Trends 
+Discover premium products with unbeatable prices and lightning-fast delivery. 
+[ Shop Now ](http://127.0.0.1:5000/shop/) [ Explore ](http://127.0.0.1:5000/shop/)
+![Shopping](https://images.unsplash.com/photo-1523275335684-37898b6baf30)
+##  Shop By Category 
+#### [🛍️ Electronics ](http://127.0.0.1:5000/shop/?category=electronics)
+#### [🛍️ Fashion ](http://127.0.0.1:5000/shop/?category=fashion)
+#### [🛍️ Laptops ](http://127.0.0.1:5000/shop/?category=laptops)
+#### [🛍️ Watches ](http://127.0.0.1:5000/shop/?category=watches)
+##  Featured Products 
+[ ![](https://picsum.photos/400/300?random=1) ](http://127.0.0.1:5000/shop/classic-denim-jacket)
+#####  [ Classic Denim Jacket ](http://127.0.0.1:5000/shop/classic-denim-jacket)
+#####  ₹1999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=2) ](http://127.0.0.1:5000/shop/running-sneakers)
+#####  [ Running Sneakers ](http://127.0.0.1:5000/shop/running-sneakers)
+#####  ₹2499.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=3) ](http://127.0.0.1:5000/shop/wireless-earbuds)
+#####  [ Wireless Earbuds ](http://127.0.0.1:5000/shop/wireless-earbuds)
+#####  ₹2999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=4) ](http://127.0.0.1:5000/shop/bluetooth-speaker)
+#####  [ Bluetooth Speaker ](http://127.0.0.1:5000/shop/bluetooth-speaker)
+#####  ₹1799.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=5) ](http://127.0.0.1:5000/shop/chronograph-watch)
+#####  [ Chronograph Watch ](http://127.0.0.1:5000/shop/chronograph-watch)
+#####  ₹4999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=6) ](http://127.0.0.1:5000/shop/smart-fitness-watch)
+#####  [ Smart Fitness Watch ](http://127.0.0.1:5000/shop/smart-fitness-watch)
+#####  ₹4999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=7) ](http://127.0.0.1:5000/shop/14-inch-ultrabook)
+#####  [ 14-inch Ultrabook ](http://127.0.0.1:5000/shop/14-inch-ultrabook)
+#####  ₹54999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=8) ](http://127.0.0.1:5000/shop/gaming-laptop)
+#####  [ Gaming Laptop ](http://127.0.0.1:5000/shop/gaming-laptop)
+#####  ₹89999.00 
+Add To Cart 
+## 🚚
+##### Free Shipping
+Fast delivery nationwide. 
+## 🔒
+##### Secure Payments
+Safe and trusted checkout. 
+## ⭐
+##### Top Quality
+Carefully selected products. 
+##  Stay Updated 
+Subscribe to get latest deals and offers. 
+Subscribe 
+##### FlaskShop
+Your trusted eCommerce platform. 
+##### Quick Links
+  * [ Home ](http://127.0.0.1:5000/)
+  * [ Products ](http://127.0.0.1:5000/shop/)
+  * [ Contact ](http://127.0.0.1:5000/)
+
+
+##### Contact
+support@example.com 
++91 98765 43210 
+* * *
+© 2026 FlaskShop. All Rights Reserved. 

@@ -1,0 +1,95 @@
+[![logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)](https://bydo.io/)
+Microservices
+[Blogs](https://bydo.io/blogs)
+Request Demo
+Multi Level Inventory Ecosystem
+#  One Platform to Power Your Entire Distribution Network
+From Super Admin to agencies to customers - manage your complete product catalogue, connect multiple agencies with their own warehouses, and let customers discover and purchase from nearby agencies through a powerful mobile app.
+Get Started
+See how it works
+![Nexus Banner](https://bydo.io/_next/static/media/banner-nexus.9d01ceef.png)
+Multi Category Products
+Agency Network
+Customer App
+Warehouse Management
+Custom Workflows
+## Scale Your Operations, Not Your Workload
+Effortless inventory control designed for high-growth brands. Automate your stock levels, optimize your warehouse space, and eliminate human error.
+### Real-Time Tracking
+Monitor every SKU across multiple locations with automated updates and low-stock alerts.
+### Centralized Control
+Manage your physical store and online warehouse from one unified dashboard.
+![Inventory Management](https://bydo.io/_next/static/media/workload-nexus.890c6810.png)
+## A Complete Multi-Level Inventory Ecosystem
+From Super Admin to agencies to customers - see how every level of your distribution network works together seamlessly.
+The EcosystemAgency NetworkCustomer AppCustomization
+![Ecosystem](https://bydo.io/_next/static/media/mobile-nexus.933da871.svg)
+### Customer Mobile App: Shop Locally, Effortlessly
+A seamless buying experience powered by location-based discovery.
+Location-Based Discovery
+Find products from nearby agencies based on your location.
+Smart Category Browsing
+Explore products quickly with clear and relevant categories.
+Easy Ordering and Live Tracking
+Place orders in seconds and monitor delivery progress live.
+Smooth and Flexible Checkout
+Complete payments with multiple secure and easy options.
+Get Started
+## One Ecosystem.  
+Two Powerful Experiences
+![Customer app preview](https://bydo.io/_next/static/media/leftMobileNexus.b77abe22.svg)
+### Agency Management App
+Manage stock from Super Admin
+Track orders and distribution
+Handle inventory across locations
+### Customer Shopping App
+Find nearby agencies instantly
+Browse and order products
+Real-time delivery tracking
+[![Google Play](https://bydo.io/_next/static/media/android.9fb1d91e.svg)](https://play.google.com/store/apps/details?id=com.bydo&pli=1)[![App Store](https://bydo.io/_next/static/media/ios.cd76a4fb.svg)](https://apps.apple.com/us/app/bydo-campus/id6741183879?uo=2)
+![Agency app preview](https://bydo.io/_next/static/media/rightMobileNexus.2d0d3f7d.png)
+![decorative connector](https://bydo.io/_next/static/media/nexusRound.beea4b16.png)![decorative connector](https://bydo.io/_next/static/media/nexusRound.beea4b16.png)
+50+
+Product Categories Supported
+500+
+Agencies Connected
+10K+
+Products Managed
+99.9%
+Uptime Guaranteed
+##  Questions? We’ve Got You Covered.
+Check out our FAQs to learn how our ERP makes HR management effortless.
+1
+### How does the Super Admin and Agency model work?
+The Super Admin sits at the top of the ecosystem — they create product categories, manage the master catalog, and onboard multiple agencies. Each agency receives stock from the Super Admin and operates independently with their own warehouses, staff, and distribution. Customers then purchase from nearby agencies through the mobile app.
+2
+### What product categories are supported?
+BYDO supports unlimited product categories — Grocery, Machines, Hardware, Bikes, Cars, Electronics, and any custom category your business needs. The Super Admin can create and configure categories to match their exact industry and product lines.
+3
+### How does the customer app find nearby agencies?
+The customer mobile app uses location-based discovery to show products available from agencies in the customer's area. Customers can browse by category, compare options, place orders, and track delivery — all from agencies closest to them.
+4
+### Can we customize workflows for our business?
+Absolutely. Every aspect of the ecosystem is configurable — from product categories and pricing rules to distribution workflows and fulfillment processes. Whether you run a grocery chain, vehicle dealership network, or hardware distribution, BYDO adapts to your operations.
+5
+### What setup and support does BYDO provide?
+BYDO provides end-to-end deployment including initial setup, configuration, data migration, and team training. After launch, you get ongoing technical support, regular updates, and a dedicated team to ensure your ecosystem runs smoothly.
+## Enterprise-Grade Security  
+for Your Entire Network
+### Multi-Level Access Control
+Separate permissions for Super Admin, agency managers, and customers — each role sees only what they need.
+### End-to-End Encryption
+All data encrypted across the entire network — from Super Admin to agencies to customer transactions.
+### Dedicated Support & SLA
+End-to-end setup, deployment, and ongoing support with guaranteed uptime for your ecosystem.
+## Ready to Build Your Distribution Network?
+From product catalog to agency delivery - we set up everything for you. Get your customized inventory ecosystem running in days, not months.
+Start Your Setup
+![BYDO logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)
+BYDO empowers modern teams with connected microservices to run campus, HR, office, clinic, and community operations smoothly.
+Quick Links
+[Campus](https://bydo.io/campus)[HR](https://bydo.io/hr)[Office](https://bydo.io/office)[Clinic](https://bydo.io/clinic)[Nexus](https://bydo.io/nexus)[Clubhouse](https://bydo.io/clubhouse)[Blogs](https://bydo.io/blogs)[Contact](https://bydo.io/contact)[Play](https://bydo.io/play)
+Connect With Us
+[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fyoutube.c029fc6c.png&w=32&q=75)](https://youtube.com/@bydo-campus?si=m0FHvtRZxUFKtIv3)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flinkdin.494c666c.png&w=32&q=75)](https://www.linkedin.com/company/bydo-campus/)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Finstagram.8572224b.png&w=32&q=75)](https://www.instagram.com/bydo_campus?igsh=bW5leXJnaWF1a3pk&utm_source=qr)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwhatsapp-channel.18eece68.png&w=32&q=75)](https://whatsapp.com/channel/0029Vb9ZZ9mHAdNSd3qW1A2d)
+[Privacy Policy](https://bydo.io/nexus/privacy)|[Terms & Conditions](https://bydo.io/nexus/term)
+© 2026 bydo.io. All rights reserved.

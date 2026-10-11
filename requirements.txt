@@ -1,6 +1,5 @@
-fastapi 
+fastapi
 uvicorn
-python-dotenv
 langgraph
 langchain_anthropic
 sqlalchemy

@@ -1,4 +1,5 @@
 import redis
+from app.config.settings import settings
 
 class RedisClient:
     _instance = None
@@ -8,8 +9,8 @@ class RedisClient:
             cls._instance = super().__new__(cls)
 
             cls._instance.client = redis.Redis(
-                host="localhost",
-                port=6379,
+                host=settings.REDIS_HOST,
+                port=settings.REDIS_PORT,
                 decode_responses=True
             )
 

@@ -1,0 +1,63 @@
+[![logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)](https://bydo.io/)
+Microservices
+[Blogs](https://bydo.io/blogs)
+[Request Demo](https://bydo.io/campus/pricing)
+# Privacy Policy
+This Privacy Policy governs the collection, use, processing, and protection of personal data on BYDO ("Platform"), a SaaS-based ERP platform developed and operated by SYNSWIFT INFOTECH LLP ("Company"). By using this Platform, users consent to the collection and processing of their data in accordance with this policy.
+## 1. Data Collection
+### 1.1 Personal Data Collected
+  * **Student Data:** Name, email, Aadhaar last 4 digits, photos, phone numbers, addresses, parent/guardian details.
+  * **School Administrator & Staff Data:** Name, email, contact details, role-based permissions.
+  * **Behavioral Data:** Student performance reports, attendance tracking, examination scores, academic progress, and disciplinary records.
+  * **Financial Data:** Payment records for school fees and other transactions.
+  * **Device & Usage Data:** IP addresses, device details, browser information, and system logs.
+  * **Location Data:** GPS coordinates and network-based location data, collected for attendance verification, transport tracking, and bus location services.
+
+
+## 2. Data Processing & Storage
+### 2.1 Data Hosting & Cross-Border Transfers
+All collected data is stored securely on OVH Canada and AWS S3 cloud servers. The Company shall ensure compliance with any future notifications from the Government of India regarding cross-border data transfers.
+### 2.2 Security Measures
+  * Data is encrypted at rest and in transit using industry-standard AES-256 and TLS encryption.
+  * Multi-factor authentication (MFA) and role-based access control (RBAC) restrict unauthorized access.
+
+
+## 3. Third-Party Data Sharing
+The Platform does not share or sell user data to third-party service providers, advertisers, or marketers.
+## 4. Compliance & Legal Requirements
+This Privacy Policy complies with applicable laws including the DPDP Act, IT Act, and other relevant regulations.
+## 5. Data Retention & Deletion
+Data is retained for 30 to 90 days after termination of a school's contract. Schools may request data deletion via support@bydo.io. To submit a personal data deletion request, visit our [Data Deletion Request](https://bydo.io/delete-data) page.
+## 6. User Rights & Access
+Users have the right to access, review, correct, or delete their personal data, subject to applicable conditions. See our [Data Deletion Request](https://bydo.io/delete-data) page for instructions on how to request deletion.
+## 7. Security Measures & Breach Notification
+Users shall be notified of a data breach if it results in significant harm, unauthorized access, or reputational damage.
+## 8. Grievance Redressal & Data Protection Officer
+Users may contact the Data Protection Officer at DPO@bydo.io for privacy concerns.
+## 9. Changes to Privacy Policy
+The Company reserves the right to modify this Privacy Policy periodically. Users will be notified of significant changes.
+## 10. Contact Information & Data Controller
+For any privacy-related concerns, users may contact SYNSWIFT INFOTECH LLP at support@bydo.io.
+## 11. Location Data Collection & Usage
+The Platform collects precise location data (GPS) and network-based location data to provide the following services:
+  * Staff and student attendance verification based on geographic location.
+  * Real-time school transport and bus tracking for safety and route monitoring.
+  * Gate tracking and visitor management within school premises.
+
+
+Location data is collected only when the user explicitly grants permission through the device settings. Users may revoke location access at any time through their device's operating system settings. Location data is not shared with any third parties and is used solely for the purposes described above.
+## 12. Camera & Photo Library Access
+The Platform may request access to the device camera and photo library for the following purposes:
+  * Profile photo upload for students and staff.
+  * Document scanning and attachment for assignments, circulars, and records.
+
+
+Camera and photo library access is requested only when needed and can be revoked at any time through device settings.
+![BYDO logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)
+BYDO empowers modern teams with connected microservices to run campus, HR, office, clinic, and community operations smoothly.
+Quick Links
+[Campus](https://bydo.io/campus)[HR](https://bydo.io/hr)[Office](https://bydo.io/office)[Clinic](https://bydo.io/clinic)[Nexus](https://bydo.io/nexus)[Clubhouse](https://bydo.io/clubhouse)[Blogs](https://bydo.io/blogs)[Contact](https://bydo.io/contact)[Play](https://bydo.io/play)
+Connect With Us
+[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fyoutube.c029fc6c.png&w=32&q=75)](https://youtube.com/@bydo-campus?si=m0FHvtRZxUFKtIv3)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flinkdin.494c666c.png&w=32&q=75)](https://www.linkedin.com/company/bydo-campus/)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Finstagram.8572224b.png&w=32&q=75)](https://www.instagram.com/bydo_campus?igsh=bW5leXJnaWF1a3pk&utm_source=qr)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwhatsapp-channel.18eece68.png&w=32&q=75)](https://whatsapp.com/channel/0029Vb9ZZ9mHAdNSd3qW1A2d)
+[Privacy Policy](https://bydo.io/campus/privacy)|[Terms & Conditions](https://bydo.io/campus/term)
+© 2026 bydo.io. All rights reserved.

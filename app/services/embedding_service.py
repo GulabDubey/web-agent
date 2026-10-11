@@ -6,10 +6,13 @@ class EmbeddingService:
 
     def __init__(self):
         if self.__class__._model is None:
-            print("Loading embedding model...")
             self.__class__._model = SentenceTransformer(
                 "BAAI/bge-large-en-v1.5",
-                token=settings.HF_TOKEN
+                # An empty string (vs. unset) would make huggingface_hub send
+                # an "Authorization: Bearer " header, which httpx rejects as
+                # malformed. `None` skips auth entirely - fine for this
+                # public model; set HF_TOKEN for gated/private ones.
+                token=settings.HF_TOKEN or None
             )
 
         self.model = self.__class__._model

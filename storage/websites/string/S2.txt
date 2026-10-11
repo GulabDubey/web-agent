@@ -1,0 +1,73 @@
+[![logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)](https://bydo.io/)
+Microservices
+[Blogs](https://bydo.io/blogs)
+[Request Demo](https://bydo.io/contact)
+![smartShield](https://bydo.io/_next/static/media/smartShieldBannerMobile.607c4e6f.png)
+![smartShield](https://bydo.io/_next/static/media/smartShieldBanner.19fb04a5.png)
+## What is Smart Shield?
+BYDO Smart Shield is a cutting-edge NFC-based attendance system designed for modern smart campuses. It allows students and staff to mark attendance quickly and effortlessly by tapping their NFC cards on the secure Smart Shield device. This seamless system works across classrooms, buses, and staff entry points, ensuring precise and reliable attendance tracking in every scenario. Each tap is instantly recorded and synchronized in real time with the BYDO Campus ERP, eliminating manual entry errors and saving administrative time. With automated monitoring, live updates, and centralized data access, Smart Shield streamlines campus operations while enhancing transparency and security. It provides accurate insights into attendance patterns, boosts student and staff safety, and supports faster, data-driven decision-making for administrators. By integrating advanced technology with intuitive design, Smart Shield empowers educational institutions to manage attendance efficiently, reduce administrative overhead, and maintain complete confidence in the accuracy and integrity of their attendance records.
+## How It Works?
+Simply tap an NFC card to record attendance instantly, syncing securely across classrooms, buses, staff, and ERP systems
+### Tap NFC Card
+Students or staff simply tap their NFC card on the Smart Shield device to securely register attendance instantly, without manual effort or delays.
+### Instant Verification
+The Smart Shield device securely verifies user identity in real time, ensuring accurate, tamper-proof attendance with complete data protection.
+### Auto Attendance Marked
+Attendance is automatically recorded for classrooms, buses, and staff entries, ensuring accurate tracking across all campus activities in real time.
+### Live ERP Update
+All attendance data from the Smart Shield device is immediately synchronized with BYDO Campus ERP, ensuring real-time updates across the platform for students and staff.
+## NFC Attendance Use Cases
+Covers classroom, bus, and staff attendance with real-time tracking, secure logs, automated alerts, and seamless ERP integration across campus operations.
+![Classroom Attendance](https://bydo.io/_next/static/media/useCaseone.1f718f36.png)
+### Classroom Attendance
+Track attendance period-wise and subject-wise accurately every day.
+Prevents proxy entries for reliable student records.
+Automatically syncs with timetable for seamless management.
+![Bus Attendance & Tracking](https://bydo.io/_next/static/media/useCasetwo.8d47f2aa.png)
+### Bus Attendance & Tracking
+Record boarding and exit attendance effortlessly.
+Monitor buses in real-time during transit.
+Ensure student safety with route tracking features.
+![Staff Attendance](https://bydo.io/_next/static/media/useCasethree.a2386564.png)
+### Staff Attendance
+Track entry, exit, and total working hours.
+Monitor late arrivals and absences effectively.
+Integrated with payroll and HR systems efficiently.
+![Universal Campus Entry](https://bydo.io/_next/static/media/useCasefour.1cb9fa2d.png)
+### Universal Campus Entry
+Manage hostels, libraries, and labs access centrally.
+Maintain centralized, secure attendance logs for all.
+## Why Smart Shield Is Smarter?
+### Key Features
+#### Instant NFC Tap
+(Under 1 Second)
+#### Automated Alerts
+For Absentees & Late Entries
+#### Real Time Sync
+With ERP & Mobile App
+#### Secure & Tamper Proof Logs
+#### AI- Ready Data Insights
+### Advantages
+#### Saves admin Time
+#### Improves attendance accuracy
+#### Enhance Student Safety
+#### Enables data-driven decisions
+## Bus Tracking Intelligence
+Smart Shield doesn't just mark attendance—it tracks movement.
+### Live Bus Location Mapping
+Track buses in real time with accurate route visualization and current location updates.
+### Student boarding & drop confirmation
+Instantly confirm when students board or exit the bus for complete safety assurance.
+### Route- Wise Attendance Reports
+View detailed attendance summaries for each route to monitor efficiency and student movement.
+### Parent notification for pickup/drop
+Automatically notify parents with timely alerts for bus pickup and drop-off events.
+![bus tracking](https://bydo.io/_next/static/media/busTracking.b7735e1a.png)
+![BYDO logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)
+BYDO empowers modern teams with connected microservices to run campus, HR, office, clinic, and community operations smoothly.
+Quick Links
+[Campus](https://bydo.io/campus)[HR](https://bydo.io/hr)[Office](https://bydo.io/office)[Clinic](https://bydo.io/clinic)[Nexus](https://bydo.io/nexus)[Clubhouse](https://bydo.io/clubhouse)[Blogs](https://bydo.io/blogs)[Contact](https://bydo.io/contact)[Play](https://bydo.io/play)
+Connect With Us
+[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fyoutube.c029fc6c.png&w=32&q=75)](https://youtube.com/@bydo-campus?si=m0FHvtRZxUFKtIv3)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flinkdin.494c666c.png&w=32&q=75)](https://www.linkedin.com/company/bydo-campus/)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Finstagram.8572224b.png&w=32&q=75)](https://www.instagram.com/bydo_campus?igsh=bW5leXJnaWF1a3pk&utm_source=qr)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwhatsapp-channel.18eece68.png&w=32&q=75)](https://whatsapp.com/channel/0029Vb9ZZ9mHAdNSd3qW1A2d)
+[Privacy Policy](https://bydo.io/campus/privacy)|[Terms & Conditions](https://bydo.io/campus/term)
+© 2026 bydo.io. All rights reserved.

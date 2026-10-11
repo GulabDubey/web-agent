@@ -23,7 +23,6 @@ class VectorRepository:
         points = []
 
         for vector, payload in zip(vectors, payloads):
-            print(payload)
             points.append(
                 PointStruct(
                     id=str(uuid4()),

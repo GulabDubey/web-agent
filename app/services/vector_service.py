@@ -35,6 +35,11 @@ class VectorService:
         collection: str,
         documents: list[dict],
     ):
+        # Qdrant's upsert rejects an empty request outright (400 "Empty
+        # update request"), so guard against that rather than letting it
+        # bubble up as a confusing error from the repository layer.
+        if not documents:
+            return
 
         texts = [
             document["content"]

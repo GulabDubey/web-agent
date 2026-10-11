@@ -1,0 +1,101 @@
+[![logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)](https://bydo.io/)
+Microservices
+[Blogs](https://bydo.io/blogs)
+Request Demo
+![](https://bydo.io/_next/static/media/app-icon.cd91ca54.png)Clubhouse by BYDO
+# The club fair,  
+open all year
+Students find clubs, join them and register for events from their phone. Staff approve, schedule and report from one console.
+Book a demo[See it by role](https://bydo.io/clubhouse#roles)
+[ iOS](https://bydo.io/)[ Android](https://bydo.io/)Web console for staff
+ACAI & Technology ClubTechnical42ADAcademic Debate SocietyCultural35EEnigmaSports31MDMarketing & Design ClubArts24ICInnovation & Problem SolvingVolunteer27CSComputer Science SocietyTechnical58ACAI & Technology ClubTechnical42ADAcademic Debate SocietyCultural35EEnigmaSports31MDMarketing & Design ClubArts24ICInnovation & Problem SolvingVolunteer27CSComputer Science SocietyTechnical58
+09JUNTech Innovation ChallengeSeminar Hall A14APRUniHack — 24-Hour HackathonLab Block C19APRAnnual Science FairMain Auditorium12APRInter-college DebateSeminar Hall B08APRStreet Basketball Open DayNorth Court15APRUniversity Soccer LeagueMain Ground09JUNTech Innovation ChallengeSeminar Hall A14APRUniHack — 24-Hour HackathonLab Block C19APRAnnual Science FairMain Auditorium12APRInter-college DebateSeminar Hall B08APRStreet Basketball Open DayNorth Court15APRUniversity Soccer LeagueMain Ground
+TechnicalCulturalSportsArtsVolunteer
+What it handles
+## The whole club office, in software
+Student affairs runs on approvals, calendars and headcounts. Each of those gets one place to live.
+  * ### Event scheduling
+Publish once and it reaches the campus calendar, the app and every member of the club.
+  * ### Approval workflows
+New clubs, events and join requests route to the right coordinator and wait in one queue.
+  * ### Member directory
+One record per student across every club they belong to, with roles and attendance.
+  * ### Push notifications
+Confirmations, reminders and announcements land on the phone, not in an inbox.
+  * ### Activity reporting
+Registrations, turnout and club growth per term — the numbers your annual report needs.
+  * ### Paid registrations
+Collect fees for ticketed events and reconcile them against the club that ran them.
+
+
+How it runs
+## One event, four people, no email
+Each step hands off to the next inside the same system. Track where a request is sitting instead of asking who has it.
+  1. 01
+Coordinator
+### Set up the club
+Create it, assign a president, pick a category. It appears in the app the moment it is approved.
+  2. 02
+Club president
+### Publish an event
+Date, venue, capacity, who can join. It reaches the calendar and notifies every member.
+  3. 03
+Student
+### Register in the app
+Browse, open the event, register. Confirmation and reminders arrive on the phone.
+  4. 04
+Coordinator
+### Report on the term
+Turnout and club activity are already counted when the annual review comes around.
+
+
+One system, four points of view
+## Everyone sees only their own work
+A student never opens an approval queue. A club president never sees another club's members. Pick a role to see what lands on their screen.
+StudentClub presidentCollege staffUniversity admin
+Mobile app
+Finds clubs worth their time and never misses a registration deadline.
+  * Browse clubs by category
+  * Request to join
+  * Register and carry the pass
+
+
+Clubs
+Search clubs
+TechnicalCulturalSportsArtsVolunteer
+AI & Technology Club
+Technical · 42 members
+Join
+Innovation & Problem Solving
+Volunteer · 31 members
+Requested
+Marketing & Design Club
+Arts · 28 members
+Join
+Questions
+## Before you ask
+The things campuses check first. Anything else, talk to us.
+  * How does BYDO help manage student clubs?
+BYDO provides a centralized dashboard where college staff and club presidents can manage member directories, schedule events, track budgets, and streamline approval workflows for all student organizations.
+  * Can students discover and join clubs through the app?
+Yes, students can browse all available clubs, view upcoming events, and join clubs directly through the BYDO mobile app with instant notifications for club activities.
+  * Does BYDO support budget tracking for clubs?
+Absolutely. BYDO allows clubs to set budgets, track expenses, and generate financial reports. University admins can oversee budget allocations and approve funding requests.
+  * How are club events managed and promoted?
+Club presidents can create events with details, set RSVP limits, and send notifications to members. Events appear on the campus calendar for easy discovery by all students.
+  * What roles and permissions does the system support?
+BYDO supports multiple roles including University Admin, College Staff, Club President, Club Manager, and Student Member — each with customizable permissions and access levels.
+
+
+Still unsure whether it fits how your campus works? [Talk to us](https://bydo.io/contact).
+## See it with your own clubs in it
+Send us your club list and categories. We will set up a working demo campus and walk your team through it.
+Book a demo
+![BYDO logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)
+BYDO empowers modern teams with connected microservices to run campus, HR, office, clinic, and community operations smoothly.
+Quick Links
+[Campus](https://bydo.io/campus)[HR](https://bydo.io/hr)[Office](https://bydo.io/office)[Clinic](https://bydo.io/clinic)[Nexus](https://bydo.io/nexus)[Clubhouse](https://bydo.io/clubhouse)[Blogs](https://bydo.io/blogs)[Contact](https://bydo.io/contact)[Play](https://bydo.io/play)
+Connect With Us
+[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fyoutube.c029fc6c.png&w=32&q=75)](https://youtube.com/@bydo-campus?si=m0FHvtRZxUFKtIv3)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flinkdin.494c666c.png&w=32&q=75)](https://www.linkedin.com/company/bydo-campus/)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Finstagram.8572224b.png&w=32&q=75)](https://www.instagram.com/bydo_campus?igsh=bW5leXJnaWF1a3pk&utm_source=qr)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwhatsapp-channel.18eece68.png&w=32&q=75)](https://whatsapp.com/channel/0029Vb9ZZ9mHAdNSd3qW1A2d)
+[Privacy Policy](https://bydo.io/clubhouse/privacy)|[Terms & Conditions](https://bydo.io/clubhouse/term)
+© 2026 bydo.io. All rights reserved.

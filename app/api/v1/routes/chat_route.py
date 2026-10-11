@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends
 from app.core.dependencies import get_vector_service
-from app.schemas.chat_schema import ChatRequest, ContactUsRequest
+from app.core.exceptions import AppException
+from app.schemas.chat_schema import ChatRequest, ContactUsRequest, ExtractWebsiteDataRequest
 from app.services.chat_service import ChatService
 from app.services.vector_service import VectorService
 from app.services.redis_service import RedisService
 from app.services.session_service import session_service
 from app.services.validator_service import ValidatorService
+from app.services.website_crawler_service import WebsiteCrawlerService
 from app.core.response import ApiResponse
 from app.services.question_service import QuestionService
 from app.config.question_config import QUESTIONS
@@ -65,18 +67,42 @@ async def chat(request: ChatRequest):
     )
 
 @router.post("/extract-website-data")
-async def extract_website_data():
-    # Folder and file path
-    folder = Path("storage/websites")
-    file_path = folder / "companiesnext.txt"
+async def extract_website_data(
+    request: ExtractWebsiteDataRequest,
+    vector_service: VectorService = Depends(get_vector_service),
+):
+    url = str(request.url)
+    website = request.website or WebsiteCrawlerService.website_slug(url)
 
-    # Create folder if it doesn't exist
-    folder.mkdir(parents=True, exist_ok=True)
+    try:
+        files = await WebsiteCrawlerService.crawl_and_save(
+            url,
+            website=website,
+            max_pages=request.max_pages,
+        )
+    except Exception as error:
+        raise AppException(f"Failed to crawl website: {error}", 502)
 
-    file_path.write_text("Hello, this is the initial content2.\n")
-    print("File created with content")
+    if not files:
+        raise AppException("No content could be extracted from the given URL.", 422)
 
-    return ApiResponse.success(data={"message": "Website-data extracted successfully!"}, message="Website-data extracted successfully!")
+    pages = vector_service.extract_texts_from_files(files)
+    chunks = vector_service.split_text_in_chunks(pages)
+
+    if not chunks:
+        raise AppException("No usable text content was found on the crawled pages.", 422)
+
+    vector_service.create_collection(website)
+    vector_service.add_documents(website, chunks)
+
+    return ApiResponse.success(
+        data={
+            "website": website,
+            "pages_crawled": len(files),
+            "chunks_stored": len(chunks),
+        },
+        message="Website data extracted and stored successfully!",
+    )
 
 @router.post("/ingest-documents")
 async def ingest_documents(vector_service: VectorService = Depends(get_vector_service)):
@@ -87,7 +113,6 @@ async def ingest_documents(vector_service: VectorService = Depends(get_vector_se
     folder = Path(f"storage/websites/{website}")
     folder.mkdir(parents=True, exist_ok=True)
     files = [str(file) for file in folder.iterdir() if file.is_file()][75:]
-    print(files)
 
     pages = vector_service.extract_texts_from_files(files)
     chunks = vector_service.split_text_in_chunks(pages)

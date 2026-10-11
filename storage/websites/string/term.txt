@@ -1,0 +1,54 @@
+[![logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)](https://bydo.io/)
+Microservices
+[Blogs](https://bydo.io/blogs)
+[Request Demo](https://bydo.io/campus/pricing)
+# Terms & Conditions
+Effective Date: 1st/March/2025
+These Terms & Conditions ("Agreement") govern the use of BYDO ("Platform"), a SaaS-based ERP platform provided by SYNSWIFT INFOTECH LLP ("Company"). By accessing or using the Platform, users agree to comply with these terms. If you do not agree, you must cease using the Platform immediately.
+## 1. Services Offered
+  * Attendance tracking
+  * Fee management
+  * Grade management
+  * Communication tools
+  * Transport management
+  * Examination management
+  * Library management
+  * Syllabus management
+  * Inventory tracking
+  * Payroll and leave/holiday management
+
+
+## 2. User Demographics & Access
+The Platform is designed for schools, administrators, teachers, students, and parents. Role-based access is enforced:
+  * **Administrators:** Full control over school-wide data
+  * **Teachers:** Access to class-related modules and student data
+  * **Students & Parents:** Restricted access to relevant information
+
+
+## 3. User Conduct & Security
+  * Users must comply with Indian laws including the IT Act, DPDP Act, and GST Act.
+  * Prohibited activities include unauthorized modifications, reverse engineering, cyber attacks, and illegal content distribution.
+
+
+## 4. Dispute Resolution & Governing Law
+This Agreement is governed by the laws of India. Disputes shall be resolved via:
+  * **Mediation:** Avvocats & Partners LLP
+  * **Arbitration:** If mediation fails, arbitration will be held in Chandigarh, India.
+
+
+## 5. Termination & Enforcement
+The Company reserves the right to terminate accounts for violations of these terms.
+## 6. Liability & Indemnification
+The Platform is provided "as-is." The Company is not liable for service disruptions, data loss, or indirect damages.
+## 7. Amendments
+The Company may amend these Terms & Conditions at any time. Continued use constitutes acceptance.
+## 8. Contact Information
+For inquiries, contact SYNSWIFT INFOTECH LLP at contact@synswift.com.
+![BYDO logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)
+BYDO empowers modern teams with connected microservices to run campus, HR, office, clinic, and community operations smoothly.
+Quick Links
+[Campus](https://bydo.io/campus)[HR](https://bydo.io/hr)[Office](https://bydo.io/office)[Clinic](https://bydo.io/clinic)[Nexus](https://bydo.io/nexus)[Clubhouse](https://bydo.io/clubhouse)[Blogs](https://bydo.io/blogs)[Contact](https://bydo.io/contact)[Play](https://bydo.io/play)
+Connect With Us
+[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fyoutube.c029fc6c.png&w=32&q=75)](https://youtube.com/@bydo-campus?si=m0FHvtRZxUFKtIv3)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flinkdin.494c666c.png&w=32&q=75)](https://www.linkedin.com/company/bydo-campus/)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Finstagram.8572224b.png&w=32&q=75)](https://www.instagram.com/bydo_campus?igsh=bW5leXJnaWF1a3pk&utm_source=qr)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwhatsapp-channel.18eece68.png&w=32&q=75)](https://whatsapp.com/channel/0029Vb9ZZ9mHAdNSd3qW1A2d)
+[Privacy Policy](https://bydo.io/campus/privacy)|[Terms & Conditions](https://bydo.io/campus/term)
+© 2026 bydo.io. All rights reserved.

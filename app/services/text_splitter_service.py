@@ -6,8 +6,6 @@ class TextSplitterService:
 
     def __init__(self):
         if self.__class__._splitter is None:
-            print("Loading text splitter...")
-
             self.__class__._splitter = RecursiveCharacterTextSplitter(
                 chunk_size=1000,
                 chunk_overlap=200

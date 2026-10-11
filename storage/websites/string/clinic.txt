@@ -1,0 +1,136 @@
+[![logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)](https://bydo.io/)
+Microservices
+[Blogs](https://bydo.io/blogs)
+Request Demo
+Clinic Management System
+#  One Platform to Power Your Entire Clinic Workflow
+Book appointments by specialty, manage patient records, coordinate staff, track inventory, and monitor clinic performance— all in one fast, clinic-themed experience.
+Request Demo
+Appointments & Scheduling
+Real-time slots, reschedules, and confirmations.
+Patient Records
+Centralized history, prescriptions, and notes.
+Clinic Dashboard
+Track performance, workload, and daily ops.
+![Clinic management banner](https://bydo.io/_next/static/media/clinicBanner.3061c375.png)
+Who It's For
+## Built for Every Stakeholder in Healthcare
+Whether you're a patient seeking care, a clinic managing operations, a doctor treating patients, or an ambulance service saving lives — BYDO Clinic has you covered.
+### Patients
+Book appointments, find nearby clinics, access health records, and trigger emergency SOS alerts — all from your mobile app.
+### Clinics
+Manage appointment schedules, bed and ventilator availability, patient records, and monitor revenue — from a centralized dashboard.
+### Doctors
+View appointment calendar, access patient history, manage specialty profiles, and handle prescriptions with ease.
+### Ambulance
+Receive real-time dispatch alerts, GPS tracking to nearest hospitals, route optimization, and manage availability status.
+Dr. Sarah Johnson
+Cardiologist • 12 years exp.
+4.9
+Available Today
+9:00 AM10:30 AM2:00 PM4:30 PM
+City Heart Clinic, 2.3 km away
+Appointment Booking
+## Find the Right Doctor, Book in Seconds
+Search by specialty, location, or doctor name. View real-time availability and book your appointment instantly.
+### Nearby Clinics
+Find clinics close to your location with real-time distance and availability information.
+### Search by Specialty
+Filter doctors by their area of expertise — cardiology, dermatology, orthopedics, and more.
+### Doctor Profiles & Ratings
+View detailed doctor profiles with patient reviews, qualifications, and experience.
+### Real-Time Slot Availability
+See available time slots updated in real-time. No more calling clinics to check availability.
+### Instant Booking Confirmation
+Book your appointment instantly and receive confirmation with all visit details.
+Emergency Alert System
+## Every Second Counts.  
+We Make Them Count More.
+Our emergency alert system connects patients to the nearest ambulances, available beds, and ventilators — within seconds.
+SOS
+### Nearby Clinics
+Instantly locates the nearest clinics with available doctors.
+### Ambulance Dispatch
+Automatically dispatches the nearest available ambulance.
+### Available Beds
+Real-time bed availability across hospitals and clinics.
+### Ventilator Status
+Live tracking of ventilator availability for critical cases.
+### How It Works
+1
+Patient triggers SOS alert
+2
+System finds nearby resources
+3
+Dispatches ambulance & alerts clinic
+4
+Real-time GPS tracking to hospital
+< 3 min
+Avg Response
+500+
+Clinics Connected
+24/7
+Always Available
+Real-time
+GPS Tracking
+Dashboards
+## Powerful Dashboards for Every Role
+Purpose-built dashboards giving clinics, doctors, and ambulance services the tools they need to deliver exceptional care.
+Clinic DashboardDoctor DashboardAmbulance Dashboard
+### Patient Queue
+Live patient queue management with wait time estimates and priority levels.
+### Bed Management
+Real-time bed occupancy tracking across wards with availability alerts.
+### Revenue Analytics
+Track daily, weekly, and monthly revenue with detailed billing breakdowns.
+![Mobile App](https://bydo.io/_next/static/media/mobileAppImage.4cfd21f1.svg)
+4.8 ★
+Rating
+Patient App
+## Healthcare in Your Pocket
+Download the BYDO Clinic app for instant access to doctors, emergency services, and your complete health records — anytime, anywhere.
+### One-Tap Emergency
+Trigger an SOS alert with a single tap to get immediate help.
+### Doctor Search
+Find and book appointments with specialists near you.
+### Appointment History
+View past and upcoming appointments in one place.
+### Health Records
+Access your prescriptions, lab reports, and medical history securely.
+[ GET IT ON Google Play ](https://bydo.io/clinic)[ Download on the App Store ](https://bydo.io/clinic)
+Frequently Asked Questions
+1
+### What is BYDO Clinic?
+BYDO Clinic is a comprehensive healthcare management platform that connects patients, clinics, doctors, and ambulance services. It offers appointment booking, emergency alerts, real-time ambulance tracking, and powerful dashboards for healthcare providers.
+2
+### How does the Emergency Alert System work?
+When a patient triggers an SOS alert from the mobile app, our system instantly locates the nearest available ambulance, checks bed and ventilator availability at nearby hospitals, and dispatches help — all within seconds. Real-time GPS tracking keeps the patient informed throughout.
+3
+### Can patients book appointments by specialty?
+Yes. Patients can search for doctors by specialty (cardiology, dermatology, orthopedics, etc.), view profiles with ratings and experience, check real-time slot availability, and book appointments instantly from the app.
+4
+### What dashboards are available for clinics?
+Clinics get a comprehensive dashboard with patient queue management, bed occupancy tracking, ventilator availability monitoring, revenue analytics, and appointment scheduling — all in real-time.
+5
+### Is there a mobile app for patients?
+Yes. The BYDO Clinic patient app is available on both Google Play Store and Apple App Store. It offers one-tap emergency SOS, doctor search, appointment booking, health records access, and real-time ambulance tracking.
+6
+### How do ambulance services benefit from the platform?
+Ambulance services receive real-time dispatch alerts, AI-powered route optimization to the nearest hospital, GPS tracking, fleet management, and availability status updates — enabling faster response times and better patient outcomes.
+7
+### Is the platform available in my city?
+BYDO Clinic is expanding rapidly across major cities. Contact our team for availability in your area or to express interest in bringing the platform to your city.
+8
+### How secure is patient data on the platform?
+We take data security very seriously. All patient data is encrypted, access is role-based, and we comply with healthcare data protection regulations. Only authorized healthcare providers can access patient records.
+## Ready to Transform Healthcare in Your City?
+Join hundreds of clinics, doctors, and ambulance services already using BYDO Clinic to deliver faster, smarter healthcare.
+Get Started
+![BYDO logo](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbydo.cf5a0beb.png&w=256&q=75)
+BYDO empowers modern teams with connected microservices to run campus, HR, office, clinic, and community operations smoothly.
+Quick Links
+[Campus](https://bydo.io/campus)[HR](https://bydo.io/hr)[Office](https://bydo.io/office)[Clinic](https://bydo.io/clinic)[Nexus](https://bydo.io/nexus)[Clubhouse](https://bydo.io/clubhouse)[Blogs](https://bydo.io/blogs)[Contact](https://bydo.io/contact)[Play](https://bydo.io/play)
+Connect With Us
+[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fyoutube.c029fc6c.png&w=32&q=75)](https://youtube.com/@bydo-campus?si=m0FHvtRZxUFKtIv3)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flinkdin.494c666c.png&w=32&q=75)](https://www.linkedin.com/company/bydo-campus/)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Finstagram.8572224b.png&w=32&q=75)](https://www.instagram.com/bydo_campus?igsh=bW5leXJnaWF1a3pk&utm_source=qr)[![social icon](https://bydo.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwhatsapp-channel.18eece68.png&w=32&q=75)](https://whatsapp.com/channel/0029Vb9ZZ9mHAdNSd3qW1A2d)
+[Privacy Policy](https://bydo.io/clinic/privacy)|[Terms & Conditions](https://bydo.io/clinic/term)
+© 2026 bydo.io. All rights reserved.
