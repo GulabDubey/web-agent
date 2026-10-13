@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
+from app.config.settings import settings
 from app.core.dependencies import get_vector_service
+from app.core.widget_auth import WidgetContext, client_ip, require_service_token, require_widget
 from app.core.exceptions import AppException
 from app.schemas.chat_schema import ChatRequest, ContactUsRequest, ExtractWebsiteDataRequest
 from app.services.chat_service import ChatService
@@ -10,6 +12,7 @@ from app.services.validator_service import ValidatorService
 from app.services.website_crawler_service import WebsiteCrawlerService
 from app.core.response import ApiResponse
 from app.services.question_service import QuestionService
+from app.services.rate_limit_service import rate_limit_service
 from app.config.question_config import QUESTIONS
 from pathlib import Path
 
@@ -20,8 +23,9 @@ redis_service = RedisService()
 question_service = QuestionService()
 
 @router.post("/contact-us")
-async def contact_us(request: ContactUsRequest):
-    session = session_service.get(request.session_id)
+async def contact_us(request: ContactUsRequest, widget: WidgetContext = Depends(require_widget)):
+    rate_limit_service.hit("contact:session", widget.scoped_session_id, 5)
+    session = session_service.get(widget.scoped_session_id)
 
     if not ValidatorService.name(request.name):
         return ApiResponse.error(message="Please enter a valid name.")
@@ -53,20 +57,28 @@ async def contact_us(request: ContactUsRequest):
     )
 
 @router.post("/chat")
-async def chat(request: ChatRequest):
-    session = session_service.get(request.session_id)
-    redis_service.add(request.session_id, "user", request.message)
-    result = await chat_service.generate_reply(request.message)
-    redis_service.add(request.session_id, "assistant", result["reply"]["answer"])
-    
-    return ApiResponse.success(data={
-        "message": result["reply"]["answer"],
-        "reply": result
-    },
-        message="Chat generated successfully!"
-    )
+async def chat(request: ChatRequest, http_request: Request, widget: WidgetContext = Depends(require_widget)):
+    # All limits are checked before the (paid) AI call starts.
+    rate_limit_service.hit("chat:session", widget.scoped_session_id, settings.RATE_LIMIT_CHAT_PER_SESSION)
+    rate_limit_service.hit("chat:ip", client_ip(http_request), settings.RATE_LIMIT_CHAT_PER_IP)
+    rate_limit_service.hit("chat:site", widget.site_id, settings.RATE_LIMIT_CHAT_PER_SITE)
+    rate_limit_service.check_token_budget(widget.site_id, settings.WIDGET_DAILY_TOKEN_LIMIT_PER_SITE)
 
-@router.post("/extract-website-data")
+    rate_limit_service.acquire_slot("chat", widget.site_id, settings.WIDGET_MAX_CONCURRENT_PER_SITE)
+    try:
+        redis_service.add(widget.scoped_session_id, "user", request.message)
+        result = await chat_service.generate_reply(request.message, widget.collection)
+    finally:
+        rate_limit_service.release_slot("chat", widget.site_id)
+
+    answer = result["reply"]["answer"]
+    redis_service.add(widget.scoped_session_id, "assistant", answer)
+    rate_limit_service.add_token_usage(widget.site_id, chat_service.token_usage(result, request.message))
+
+    # Only the answer is returned; model metadata stays server-side.
+    return ApiResponse.success(data={"message": answer}, message="Chat generated successfully!")
+
+@router.post("/extract-website-data", dependencies=[Depends(require_service_token)])
 async def extract_website_data(
     request: ExtractWebsiteDataRequest,
     vector_service: VectorService = Depends(get_vector_service),
@@ -104,7 +116,7 @@ async def extract_website_data(
         message="Website data extracted and stored successfully!",
     )
 
-@router.post("/ingest-documents")
+@router.post("/ingest-documents", dependencies=[Depends(require_service_token)])
 async def ingest_documents(vector_service: VectorService = Depends(get_vector_service)):
     # files = [
     #     "storage/websites/companiesnext/001_companiesnext.txt",

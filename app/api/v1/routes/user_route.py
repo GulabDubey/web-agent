@@ -4,8 +4,10 @@ from app.core.dependencies import get_user_service
 from app.schemas.user_schema import UserList, UserCreate
 from app.core.response import ApiResponse
 from fastapi import Depends
+from app.core.widget_auth import require_service_token
 
-router = APIRouter()
+# User records are customer data: server-to-server access only.
+router = APIRouter(dependencies=[Depends(require_service_token)])
 
 @router.get("/users")
 async def index(request: UserList = Depends(), service: UserService=Depends(get_user_service)):

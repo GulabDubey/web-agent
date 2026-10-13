@@ -1,6 +1,7 @@
 (function () {
   const currentScript = document.currentScript;
-  const THEME_COLOR = currentScript.getAttribute("data-theme-color");
+  const THEME_COLOR = currentScript.getAttribute("data-theme-color") || "#343a40";
+  const SITE_KEY = (currentScript.getAttribute("data-site-key") || "").trim();
   const BASE_URL = new URL(currentScript.src).origin;
   function loadScript(src) {
     return new Promise((resolve, reject) => {
@@ -22,6 +23,11 @@
   }
 
   function loadWidget() {
+    if (!SITE_KEY) {
+      console.error("Chatbot: missing data-site-key attribute on the widget script tag.");
+      return;
+    }
+
     // Create container
     const container = document.createElement("div");
     container.id = "chatbot-root";
@@ -40,17 +46,23 @@
       document.head.appendChild(css);
     });
 
+    const api = createApiClient(BASE_URL, SITE_KEY);
+
+    // The chatbot is only shown once the backend has authorized this site
+    // key on this domain (active subscription).
     Promise.all([
+      api.startSession(),
       cssLoad,
       loadScript("https://cdn.jsdelivr.net/npm/marked/marked.min.js"),
       fetch(`${BASE_URL}/widget/chat.html`).then((res) => res.text()),
     ])
-      .then(([, , html]) => {
+      .then(([, , , html]) => {
         container.innerHTML = html;
-        initChatbot(BASE_URL, THEME_COLOR);
+        initChatbot(container, api, THEME_COLOR);
       })
       .catch((err) => {
-        console.error("Failed to load chatbot:", err);
+        container.remove();
+        console.error("Chatbot unavailable:", err.message || err);
       });
   }
 
@@ -60,6 +72,94 @@
     loadWidget();
   }
 })();
+
+// Talks to the chatbot API with a short-lived widget token kept only in
+// memory (never in localStorage). An expired token is exchanged once for a
+// new one in the same chat session before the request is retried.
+function createApiClient(BASE_URL, SITE_KEY) {
+  let token = null;
+  let refreshing = null;
+
+  async function readJson(response) {
+    try {
+      return await response.json();
+    } catch (parseError) {
+      // Response body wasn't valid JSON; callers fall back to a generic error.
+      return null;
+    }
+  }
+
+  function errorFrom(response, data) {
+    const error = new Error(
+      (data && data.message) ||
+        `Something went wrong (HTTP ${response.status}). Please try again.`,
+    );
+    error.status = response.status;
+    error.code = data && data.code;
+    return error;
+  }
+
+  async function requestToken(path, options) {
+    const response = await fetch(`${BASE_URL}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options.headers },
+      body: options.body,
+    });
+    const data = await readJson(response);
+
+    if (!response.ok || !data || !data.success || !data.data || !data.data.token) {
+      throw errorFrom(response, data);
+    }
+    token = data.data.token;
+  }
+
+  function startSession() {
+    return requestToken("/api/v1/widget/session", {
+      body: JSON.stringify({ site_key: SITE_KEY }),
+    });
+  }
+
+  function refresh() {
+    if (!refreshing) {
+      refreshing = requestToken("/api/v1/widget/token/refresh", {
+        headers: { Authorization: `Bearer ${token}` },
+      }).finally(() => {
+        refreshing = null;
+      });
+    }
+    return refreshing;
+  }
+
+  async function post(path, payload, retried) {
+    const response = await fetch(`${BASE_URL}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await readJson(response);
+
+    if (response.status === 401 && !retried) {
+      try {
+        await refresh();
+      } catch (refreshError) {
+        // Session can't be renewed (e.g. tab idle too long); start a new one.
+        await startSession();
+      }
+      return post(path, payload, true);
+    }
+
+    if (response.ok && data && data.success && data.data && data.data.message) {
+      return { ok: true, message: data.data.message };
+    }
+
+    return { ok: false, message: errorFrom(response, data).message };
+  }
+
+  return { startSession, post };
+}
 
 // [iso2, country name, dial code]
 const CNAI_COUNTRIES = [
@@ -161,35 +261,34 @@ function cnaiFlagImg(iso2, size, className) {
   return img;
 }
 
-function initChatbot(BASE_URL, THEME_COLOR) {
+function initChatbot(root, api, THEME_COLOR) {
   if (window.marked) {
     // gfm: bullet/numbered lists, bold, italic, links etc.
     // breaks: single newlines from the LLM become <br> instead of being ignored.
     marked.setOptions({ gfm: true, breaks: true });
   }
 
-  const sessionId = crypto.randomUUID();
-  const chatWindow = document.getElementById("chat-window");
-  const chatToggle = document.getElementById("chat-toggle");
-  const chatClose = document.getElementById("chat-close");
-  const chatInput = document.getElementById("chat-input");
-  const chatBody = document.querySelector(".cnai-body");
-  const chatMessages = document.getElementById("cnai-messages");
+  const chatWindow = root.querySelector("#chat-window");
+  const chatToggle = root.querySelector("#chat-toggle");
+  const chatClose = root.querySelector("#chat-close");
+  const chatInput = root.querySelector("#chat-input");
+  const chatBody = root.querySelector(".cnai-body");
+  const chatMessages = root.querySelector("#cnai-messages");
 
-  const leadForm = document.getElementById("cnai-lead-form");
-  const leadName = document.getElementById("cnai-name");
-  const leadEmail = document.getElementById("cnai-email");
-  const leadContact = document.getElementById("cnai-contact");
-  const leadError = document.getElementById("cnai-lead-error");
-  const leadSubmit = document.getElementById("cnai-lead-submit");
+  const leadForm = root.querySelector("#cnai-lead-form");
+  const leadName = root.querySelector("#cnai-name");
+  const leadEmail = root.querySelector("#cnai-email");
+  const leadContact = root.querySelector("#cnai-contact");
+  const leadError = root.querySelector("#cnai-lead-error");
+  const leadSubmit = root.querySelector("#cnai-lead-submit");
 
-  const countryPicker = document.getElementById("cnai-country-picker");
-  const countryToggle = document.getElementById("cnai-country-toggle");
-  const countryFlag = document.getElementById("cnai-country-flag");
-  const countryDropdown = document.getElementById("cnai-country-dropdown");
-  const countrySearch = document.getElementById("cnai-country-search");
-  const countryList = document.getElementById("cnai-country-list");
-  const dialCodeEl = document.getElementById("cnai-dial-code");
+  const countryPicker = root.querySelector("#cnai-country-picker");
+  const countryToggle = root.querySelector("#cnai-country-toggle");
+  const countryFlag = root.querySelector("#cnai-country-flag");
+  const countryDropdown = root.querySelector("#cnai-country-dropdown");
+  const countrySearch = root.querySelector("#cnai-country-search");
+  const countryList = root.querySelector("#cnai-country-list");
+  const dialCodeEl = root.querySelector("#cnai-dial-code");
 
   let selectedCountry = CNAI_COUNTRIES.find((c) => c[0] === "IN") || CNAI_COUNTRIES[0];
 
@@ -304,8 +403,7 @@ function initChatbot(BASE_URL, THEME_COLOR) {
     leadSubmit.textContent = "Please wait...";
 
     try {
-      const result = await submitContactUs({
-        session_id: sessionId,
+      const result = await api.post("/api/v1/contact-us", {
         name: name,
         email: email,
         country_code: countryCode,
@@ -345,42 +443,6 @@ function initChatbot(BASE_URL, THEME_COLOR) {
     }
 
     return null;
-  }
-
-  async function submitContactUs(payload) {
-    const response = await fetch(`${BASE_URL}/api/v1/contact-us`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    let data = null;
-    try {
-      data = await response.json();
-    } catch (parseError) {
-      // Response body wasn't valid JSON; fall through to the generic error below.
-    }
-
-    if (
-      response.ok &&
-      data &&
-      data.success &&
-      data.data &&
-      data.data.message
-    ) {
-      return { ok: true, message: data.data.message };
-    }
-
-    if (data && data.message) {
-      return { ok: false, message: data.message };
-    }
-
-    return {
-      ok: false,
-      message: `Something went wrong (HTTP ${response.status}). Please try again.`,
-    };
   }
 
   function openChatWindow() {
@@ -458,43 +520,9 @@ function initChatbot(BASE_URL, THEME_COLOR) {
     const loadingEl = addLoadingMessage();
 
     try {
-      const response = await fetch(`${BASE_URL}/api/v1/chat`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          session_id: sessionId,
-          message: message,
-        }),
-      });
-
-      let data = null;
-      try {
-        data = await response.json();
-      } catch (parseError) {
-        // Response body wasn't valid JSON; fall through to the generic error below.
-      }
-
-      console.log("Bot Response:", data);
-
+      const result = await api.post("/api/v1/chat", { message: message });
       removeLoadingMessage(loadingEl);
-
-      if (
-        response.ok &&
-        data &&
-        data.success &&
-        data.data &&
-        data.data.message
-      ) {
-        addBotMessage(data.data.message);
-      } else if (data && data.message) {
-        addBotMessage(data.message);
-      } else {
-        addBotMessage(
-          `Something went wrong (HTTP ${response.status}). Please try again.`,
-        );
-      }
+      addBotMessage(result.message);
     } catch (error) {
       console.error("Chat API Error:", error);
       removeLoadingMessage(loadingEl);

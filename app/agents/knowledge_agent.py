@@ -10,7 +10,7 @@ class KnowledgeAgent:
         message = state["message"]
 
         result = self.vector_service.similarity_search(
-            "companiesnext",
+            state["collection"],
             message
         )
 

@@ -39,5 +39,75 @@ class Settings(BaseSettings):
     VOYAGE_API_KEY: str
     HF_TOKEN: str
 
+    # --- Django subscription verification (app/services/subscription_service.py)
+    # Server-to-server only; DJANGO_SERVICE_API_KEY must match one of the
+    # Django project's CHATBOT_SERVICE_TOKENS and never reaches the browser.
+    DJANGO_SUBSCRIPTION_VERIFY_URL: str = ""
+    DJANGO_SERVICE_API_KEY: str = ""
+    DJANGO_VERIFY_TIMEOUT_SECONDS: float = 5.0
+    # After this many failed calls within a minute, stop calling Django for
+    # DJANGO_VERIFY_COOLDOWN_SECONDS (requests fail closed with 503 meanwhile).
+    DJANGO_VERIFY_FAILURE_THRESHOLD: int = 5
+    DJANGO_VERIFY_COOLDOWN_SECONDS: int = 30
+
+    # --- Widget access tokens (app/services/widget_token_service.py) --------
+    WIDGET_JWT_SECRET: str = ""
+    WIDGET_TOKEN_TTL_SECONDS: int = 600
+    # An expired token can still be exchanged for a new one (same chat
+    # session) within this window; the subscription is re-verified first.
+    WIDGET_TOKEN_REFRESH_GRACE_SECONDS: int = 1800
+    WIDGET_TOKEN_AUDIENCE: str = "chatbot-widget"
+    WIDGET_TOKEN_ISSUER: str = "web-agent"
+
+    # --- Widget authorization (app/core/widget_auth.py) ---------------------
+    # How long a Django "authorized" answer is reused before re-verifying,
+    # and how long a denial is remembered.
+    WIDGET_AUTH_CACHE_TTL_SECONDS: int = 60
+    WIDGET_DENY_CACHE_TTL_SECONDS: int = 30
+    # Optional extra allowlist of domains (comma-separated, e.g.
+    # "example.com,shop.example.org"). Empty = rely on Django's registered domain.
+    WIDGET_ALLOWED_ORIGINS: str = ""
+    # Development only (ignored unless APP_ENV=development). Local origins
+    # (localhost/127.0.0.1/[::1]) are verified with Django as their own
+    # "host:port", e.g. "127.0.0.1:8012" - register that in Django's admin.
+    # Set this to make every local origin act as a registered public domain
+    # instead (e.g. "companiesnext.com").
+    WIDGET_DEV_DOMAIN: str = ""
+    # Knowledge collection per Django site id, as JSON: {"12": "companiesnext"}.
+    # Sites not listed use the collection named after their verified domain.
+    WIDGET_SITE_COLLECTIONS: dict[str, str] = {}
+    WIDGET_MAX_MESSAGE_CHARS: int = 2000
+
+    # --- Rate limits & usage (per minute unless noted) ----------------------
+    RATE_LIMIT_INVALID_KEY_PER_IP: int = 10  # per 10 minutes
+    RATE_LIMIT_SESSIONS_PER_IP: int = 20
+    RATE_LIMIT_SESSIONS_PER_SITE: int = 300
+    RATE_LIMIT_CHAT_PER_SESSION: int = 15
+    RATE_LIMIT_CHAT_PER_IP: int = 40
+    RATE_LIMIT_CHAT_PER_SITE: int = 300
+    WIDGET_MAX_CONCURRENT_PER_SITE: int = 10
+    # LLM tokens per site per UTC day; 0 disables the cap.
+    WIDGET_DAILY_TOKEN_LIMIT_PER_SITE: int = 1_000_000
+
+    # --- Internal service endpoints (crawl/ingest/users) --------------------
+    # Comma-separated bearer tokens; the Django CRAWLER_API_TOKEN must be one.
+    INTERNAL_SERVICE_TOKENS: str = ""
+
+    @property
+    def is_development(self) -> bool:
+        return self.APP_ENV == "development"
+
+    @staticmethod
+    def _split(value: str) -> list[str]:
+        return [item.strip() for item in value.split(",") if item.strip()]
+
+    @property
+    def internal_service_tokens(self) -> list[str]:
+        return self._split(self.INTERNAL_SERVICE_TOKENS)
+
+    @property
+    def widget_allowed_origins(self) -> list[str]:
+        return self._split(self.WIDGET_ALLOWED_ORIGINS)
+
 
 settings = Settings()

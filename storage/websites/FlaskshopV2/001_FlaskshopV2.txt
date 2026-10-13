@@ -1,0 +1,330 @@
+[ FlaskShop ](http://127.0.0.1:8012/)
+  * [ Home ](http://127.0.0.1:8012/)
+  * [ Products ](http://127.0.0.1:8012/shop/)
+
+
+[ Login ](http://127.0.0.1:8012/auth/login) [ Register ](http://127.0.0.1:8012/auth/register)
+💬 
+AI Assistant ✕
+**Bot:** Hello! How can I help you today? 
+Send
+#  Shop The Latest Trends 
+Discover premium products with unbeatable prices and lightning-fast delivery. 
+[ Shop Now ](http://127.0.0.1:8012/shop/) [ Explore ](http://127.0.0.1:8012/shop/)
+![Shopping](https://images.unsplash.com/photo-1523275335684-37898b6baf30)
+##  Shop By Category 
+#### [🛍️ Electronics ](http://127.0.0.1:8012/shop/?category=electronics)
+#### [🛍️ Fashion ](http://127.0.0.1:8012/shop/?category=fashion)
+#### [🛍️ Laptops ](http://127.0.0.1:8012/shop/?category=laptops)
+#### [🛍️ Watches ](http://127.0.0.1:8012/shop/?category=watches)
+##  Featured Products 
+[ ![](https://picsum.photos/400/300?random=1) ](http://127.0.0.1:8012/shop/classic-denim-jacket)
+#####  [ Classic Denim Jacket ](http://127.0.0.1:8012/shop/classic-denim-jacket)
+#####  ₹1999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=2) ](http://127.0.0.1:8012/shop/running-sneakers)
+#####  [ Running Sneakers ](http://127.0.0.1:8012/shop/running-sneakers)
+#####  ₹2499.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=3) ](http://127.0.0.1:8012/shop/wireless-earbuds)
+#####  [ Wireless Earbuds ](http://127.0.0.1:8012/shop/wireless-earbuds)
+#####  ₹2999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=4) ](http://127.0.0.1:8012/shop/bluetooth-speaker)
+#####  [ Bluetooth Speaker ](http://127.0.0.1:8012/shop/bluetooth-speaker)
+#####  ₹1799.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=5) ](http://127.0.0.1:8012/shop/chronograph-watch)
+#####  [ Chronograph Watch ](http://127.0.0.1:8012/shop/chronograph-watch)
+#####  ₹4999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=6) ](http://127.0.0.1:8012/shop/smart-fitness-watch)
+#####  [ Smart Fitness Watch ](http://127.0.0.1:8012/shop/smart-fitness-watch)
+#####  ₹4999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=7) ](http://127.0.0.1:8012/shop/14-inch-ultrabook)
+#####  [ 14-inch Ultrabook ](http://127.0.0.1:8012/shop/14-inch-ultrabook)
+#####  ₹54999.00 
+Add To Cart 
+[ ![](https://picsum.photos/400/300?random=8) ](http://127.0.0.1:8012/shop/gaming-laptop)
+#####  [ Gaming Laptop ](http://127.0.0.1:8012/shop/gaming-laptop)
+#####  ₹89999.00 
+Add To Cart 
+## 🚚
+##### Free Shipping
+Fast delivery nationwide. 
+## 🔒
+##### Secure Payments
+Safe and trusted checkout. 
+## ⭐
+##### Top Quality
+Carefully selected products. 
+##  Stay Updated 
+Subscribe to get latest deals and offers. 
+Subscribe 
+##### FlaskShop
+Your trusted eCommerce platform. 
+##### Quick Links
+  * [ Home ](http://127.0.0.1:8012/)
+  * [ Products ](http://127.0.0.1:8012/shop/)
+  * [ Contact ](http://127.0.0.1:8012/)
+
+
+##### Contact
+support@example.com 
++91 98765 43210 
+* * *
+© 2026 FlaskShop. All Rights Reserved. 
+🤖 
+AI
+#### Companiesnext AI
+Online
+✕ 
+Hello 👋  
+Please share a few details before we start chatting. 
+Name
+Email
+Contact Number
+![](https://flagcdn.com/24x18/in.png) ▾
+  * ![](https://flagcdn.com/20x15/af.png)Afghanistan+93
+  * ![](https://flagcdn.com/20x15/al.png)Albania+355
+  * ![](https://flagcdn.com/20x15/dz.png)Algeria+213
+  * ![](https://flagcdn.com/20x15/as.png)American Samoa+1
+  * ![](https://flagcdn.com/20x15/ad.png)Andorra+376
+  * ![](https://flagcdn.com/20x15/ao.png)Angola+244
+  * ![](https://flagcdn.com/20x15/ai.png)Anguilla+1
+  * ![](https://flagcdn.com/20x15/ag.png)Antigua and Barbuda+1
+  * ![](https://flagcdn.com/20x15/ar.png)Argentina+54
+  * ![](https://flagcdn.com/20x15/am.png)Armenia+374
+  * ![](https://flagcdn.com/20x15/aw.png)Aruba+297
+  * ![](https://flagcdn.com/20x15/au.png)Australia+61
+  * ![](https://flagcdn.com/20x15/at.png)Austria+43
+  * ![](https://flagcdn.com/20x15/az.png)Azerbaijan+994
+  * ![](https://flagcdn.com/20x15/bs.png)Bahamas+1
+  * ![](https://flagcdn.com/20x15/bh.png)Bahrain+973
+  * ![](https://flagcdn.com/20x15/bd.png)Bangladesh+880
+  * ![](https://flagcdn.com/20x15/bb.png)Barbados+1
+  * ![](https://flagcdn.com/20x15/by.png)Belarus+375
+  * ![](https://flagcdn.com/20x15/be.png)Belgium+32
+  * ![](https://flagcdn.com/20x15/bz.png)Belize+501
+  * ![](https://flagcdn.com/20x15/bj.png)Benin+229
+  * ![](https://flagcdn.com/20x15/bm.png)Bermuda+1
+  * ![](https://flagcdn.com/20x15/bt.png)Bhutan+975
+  * ![](https://flagcdn.com/20x15/bo.png)Bolivia+591
+  * ![](https://flagcdn.com/20x15/ba.png)Bosnia and Herzegovina+387
+  * ![](https://flagcdn.com/20x15/bw.png)Botswana+267
+  * ![](https://flagcdn.com/20x15/br.png)Brazil+55
+  * ![](https://flagcdn.com/20x15/io.png)British Indian Ocean Territory+246
+  * ![](https://flagcdn.com/20x15/vg.png)British Virgin Islands+1
+  * ![](https://flagcdn.com/20x15/bn.png)Brunei+673
+  * ![](https://flagcdn.com/20x15/bg.png)Bulgaria+359
+  * ![](https://flagcdn.com/20x15/bf.png)Burkina Faso+226
+  * ![](https://flagcdn.com/20x15/bi.png)Burundi+257
+  * ![](https://flagcdn.com/20x15/kh.png)Cambodia+855
+  * ![](https://flagcdn.com/20x15/cm.png)Cameroon+237
+  * ![](https://flagcdn.com/20x15/ca.png)Canada+1
+  * ![](https://flagcdn.com/20x15/cv.png)Cape Verde+238
+  * ![](https://flagcdn.com/20x15/ky.png)Cayman Islands+1
+  * ![](https://flagcdn.com/20x15/cf.png)Central African Republic+236
+  * ![](https://flagcdn.com/20x15/td.png)Chad+235
+  * ![](https://flagcdn.com/20x15/cl.png)Chile+56
+  * ![](https://flagcdn.com/20x15/cn.png)China+86
+  * ![](https://flagcdn.com/20x15/cx.png)Christmas Island+61
+  * ![](https://flagcdn.com/20x15/cc.png)Cocos Islands+61
+  * ![](https://flagcdn.com/20x15/co.png)Colombia+57
+  * ![](https://flagcdn.com/20x15/km.png)Comoros+269
+  * ![](https://flagcdn.com/20x15/cd.png)Congo (DRC)+243
+  * ![](https://flagcdn.com/20x15/cg.png)Congo (Republic)+242
+  * ![](https://flagcdn.com/20x15/ck.png)Cook Islands+682
+  * ![](https://flagcdn.com/20x15/cr.png)Costa Rica+506
+  * ![](https://flagcdn.com/20x15/hr.png)Croatia+385
+  * ![](https://flagcdn.com/20x15/cu.png)Cuba+53
+  * ![](https://flagcdn.com/20x15/cw.png)Curacao+599
+  * ![](https://flagcdn.com/20x15/cy.png)Cyprus+357
+  * ![](https://flagcdn.com/20x15/cz.png)Czech Republic+420
+  * ![](https://flagcdn.com/20x15/dk.png)Denmark+45
+  * ![](https://flagcdn.com/20x15/dj.png)Djibouti+253
+  * ![](https://flagcdn.com/20x15/dm.png)Dominica+1
+  * ![](https://flagcdn.com/20x15/do.png)Dominican Republic+1
+  * ![](https://flagcdn.com/20x15/tl.png)East Timor+670
+  * ![](https://flagcdn.com/20x15/ec.png)Ecuador+593
+  * ![](https://flagcdn.com/20x15/eg.png)Egypt+20
+  * ![](https://flagcdn.com/20x15/sv.png)El Salvador+503
+  * ![](https://flagcdn.com/20x15/gq.png)Equatorial Guinea+240
+  * ![](https://flagcdn.com/20x15/er.png)Eritrea+291
+  * ![](https://flagcdn.com/20x15/ee.png)Estonia+372
+  * ![](https://flagcdn.com/20x15/et.png)Ethiopia+251
+  * ![](https://flagcdn.com/20x15/fk.png)Falkland Islands+500
+  * ![](https://flagcdn.com/20x15/fo.png)Faroe Islands+298
+  * ![](https://flagcdn.com/20x15/fj.png)Fiji+679
+  * ![](https://flagcdn.com/20x15/fi.png)Finland+358
+  * ![](https://flagcdn.com/20x15/fr.png)France+33
+  * ![](https://flagcdn.com/20x15/gf.png)French Guiana+594
+  * ![](https://flagcdn.com/20x15/pf.png)French Polynesia+689
+  * ![](https://flagcdn.com/20x15/ga.png)Gabon+241
+  * ![](https://flagcdn.com/20x15/gm.png)Gambia+220
+  * ![](https://flagcdn.com/20x15/ge.png)Georgia+995
+  * ![](https://flagcdn.com/20x15/de.png)Germany+49
+  * ![](https://flagcdn.com/20x15/gh.png)Ghana+233
+  * ![](https://flagcdn.com/20x15/gi.png)Gibraltar+350
+  * ![](https://flagcdn.com/20x15/gr.png)Greece+30
+  * ![](https://flagcdn.com/20x15/gl.png)Greenland+299
+  * ![](https://flagcdn.com/20x15/gd.png)Grenada+1
+  * ![](https://flagcdn.com/20x15/gp.png)Guadeloupe+590
+  * ![](https://flagcdn.com/20x15/gu.png)Guam+1
+  * ![](https://flagcdn.com/20x15/gt.png)Guatemala+502
+  * ![](https://flagcdn.com/20x15/gg.png)Guernsey+44
+  * ![](https://flagcdn.com/20x15/gn.png)Guinea+224
+  * ![](https://flagcdn.com/20x15/gw.png)Guinea-Bissau+245
+  * ![](https://flagcdn.com/20x15/gy.png)Guyana+592
+  * ![](https://flagcdn.com/20x15/ht.png)Haiti+509
+  * ![](https://flagcdn.com/20x15/hn.png)Honduras+504
+  * ![](https://flagcdn.com/20x15/hk.png)Hong Kong+852
+  * ![](https://flagcdn.com/20x15/hu.png)Hungary+36
+  * ![](https://flagcdn.com/20x15/is.png)Iceland+354
+  * ![](https://flagcdn.com/20x15/in.png)India+91
+  * ![](https://flagcdn.com/20x15/id.png)Indonesia+62
+  * ![](https://flagcdn.com/20x15/ir.png)Iran+98
+  * ![](https://flagcdn.com/20x15/iq.png)Iraq+964
+  * ![](https://flagcdn.com/20x15/ie.png)Ireland+353
+  * ![](https://flagcdn.com/20x15/im.png)Isle of Man+44
+  * ![](https://flagcdn.com/20x15/il.png)Israel+972
+  * ![](https://flagcdn.com/20x15/it.png)Italy+39
+  * ![](https://flagcdn.com/20x15/ci.png)Ivory Coast+225
+  * ![](https://flagcdn.com/20x15/jm.png)Jamaica+1
+  * ![](https://flagcdn.com/20x15/jp.png)Japan+81
+  * ![](https://flagcdn.com/20x15/je.png)Jersey+44
+  * ![](https://flagcdn.com/20x15/jo.png)Jordan+962
+  * ![](https://flagcdn.com/20x15/kz.png)Kazakhstan+7
+  * ![](https://flagcdn.com/20x15/ke.png)Kenya+254
+  * ![](https://flagcdn.com/20x15/ki.png)Kiribati+686
+  * ![](https://flagcdn.com/20x15/xk.png)Kosovo+383
+  * ![](https://flagcdn.com/20x15/kw.png)Kuwait+965
+  * ![](https://flagcdn.com/20x15/kg.png)Kyrgyzstan+996
+  * ![](https://flagcdn.com/20x15/la.png)Laos+856
+  * ![](https://flagcdn.com/20x15/lv.png)Latvia+371
+  * ![](https://flagcdn.com/20x15/lb.png)Lebanon+961
+  * ![](https://flagcdn.com/20x15/ls.png)Lesotho+266
+  * ![](https://flagcdn.com/20x15/lr.png)Liberia+231
+  * ![](https://flagcdn.com/20x15/ly.png)Libya+218
+  * ![](https://flagcdn.com/20x15/li.png)Liechtenstein+423
+  * ![](https://flagcdn.com/20x15/lt.png)Lithuania+370
+  * ![](https://flagcdn.com/20x15/lu.png)Luxembourg+352
+  * ![](https://flagcdn.com/20x15/mo.png)Macau+853
+  * ![](https://flagcdn.com/20x15/mk.png)North Macedonia+389
+  * ![](https://flagcdn.com/20x15/mg.png)Madagascar+261
+  * ![](https://flagcdn.com/20x15/mw.png)Malawi+265
+  * ![](https://flagcdn.com/20x15/my.png)Malaysia+60
+  * ![](https://flagcdn.com/20x15/mv.png)Maldives+960
+  * ![](https://flagcdn.com/20x15/ml.png)Mali+223
+  * ![](https://flagcdn.com/20x15/mt.png)Malta+356
+  * ![](https://flagcdn.com/20x15/mh.png)Marshall Islands+692
+  * ![](https://flagcdn.com/20x15/mq.png)Martinique+596
+  * ![](https://flagcdn.com/20x15/mr.png)Mauritania+222
+  * ![](https://flagcdn.com/20x15/mu.png)Mauritius+230
+  * ![](https://flagcdn.com/20x15/mx.png)Mexico+52
+  * ![](https://flagcdn.com/20x15/fm.png)Micronesia+691
+  * ![](https://flagcdn.com/20x15/md.png)Moldova+373
+  * ![](https://flagcdn.com/20x15/mc.png)Monaco+377
+  * ![](https://flagcdn.com/20x15/mn.png)Mongolia+976
+  * ![](https://flagcdn.com/20x15/me.png)Montenegro+382
+  * ![](https://flagcdn.com/20x15/ms.png)Montserrat+1
+  * ![](https://flagcdn.com/20x15/ma.png)Morocco+212
+  * ![](https://flagcdn.com/20x15/mz.png)Mozambique+258
+  * ![](https://flagcdn.com/20x15/mm.png)Myanmar+95
+  * ![](https://flagcdn.com/20x15/na.png)Namibia+264
+  * ![](https://flagcdn.com/20x15/nr.png)Nauru+674
+  * ![](https://flagcdn.com/20x15/np.png)Nepal+977
+  * ![](https://flagcdn.com/20x15/nl.png)Netherlands+31
+  * ![](https://flagcdn.com/20x15/nc.png)New Caledonia+687
+  * ![](https://flagcdn.com/20x15/nz.png)New Zealand+64
+  * ![](https://flagcdn.com/20x15/ni.png)Nicaragua+505
+  * ![](https://flagcdn.com/20x15/ne.png)Niger+227
+  * ![](https://flagcdn.com/20x15/ng.png)Nigeria+234
+  * ![](https://flagcdn.com/20x15/nu.png)Niue+683
+  * ![](https://flagcdn.com/20x15/nf.png)Norfolk Island+672
+  * ![](https://flagcdn.com/20x15/kp.png)North Korea+850
+  * ![](https://flagcdn.com/20x15/mp.png)Northern Mariana Islands+1
+  * ![](https://flagcdn.com/20x15/no.png)Norway+47
+  * ![](https://flagcdn.com/20x15/om.png)Oman+968
+  * ![](https://flagcdn.com/20x15/pk.png)Pakistan+92
+  * ![](https://flagcdn.com/20x15/pw.png)Palau+680
+  * ![](https://flagcdn.com/20x15/ps.png)Palestine+970
+  * ![](https://flagcdn.com/20x15/pa.png)Panama+507
+  * ![](https://flagcdn.com/20x15/pg.png)Papua New Guinea+675
+  * ![](https://flagcdn.com/20x15/py.png)Paraguay+595
+  * ![](https://flagcdn.com/20x15/pe.png)Peru+51
+  * ![](https://flagcdn.com/20x15/ph.png)Philippines+63
+  * ![](https://flagcdn.com/20x15/pl.png)Poland+48
+  * ![](https://flagcdn.com/20x15/pt.png)Portugal+351
+  * ![](https://flagcdn.com/20x15/pr.png)Puerto Rico+1
+  * ![](https://flagcdn.com/20x15/qa.png)Qatar+974
+  * ![](https://flagcdn.com/20x15/re.png)Reunion+262
+  * ![](https://flagcdn.com/20x15/ro.png)Romania+40
+  * ![](https://flagcdn.com/20x15/ru.png)Russia+7
+  * ![](https://flagcdn.com/20x15/rw.png)Rwanda+250
+  * ![](https://flagcdn.com/20x15/bl.png)Saint Barthelemy+590
+  * ![](https://flagcdn.com/20x15/sh.png)Saint Helena+290
+  * ![](https://flagcdn.com/20x15/kn.png)Saint Kitts and Nevis+1
+  * ![](https://flagcdn.com/20x15/lc.png)Saint Lucia+1
+  * ![](https://flagcdn.com/20x15/mf.png)Saint Martin+590
+  * ![](https://flagcdn.com/20x15/pm.png)Saint Pierre and Miquelon+508
+  * ![](https://flagcdn.com/20x15/vc.png)Saint Vincent and the Grenadines+1
+  * ![](https://flagcdn.com/20x15/ws.png)Samoa+685
+  * ![](https://flagcdn.com/20x15/sm.png)San Marino+378
+  * ![](https://flagcdn.com/20x15/st.png)Sao Tome and Principe+239
+  * ![](https://flagcdn.com/20x15/sa.png)Saudi Arabia+966
+  * ![](https://flagcdn.com/20x15/sn.png)Senegal+221
+  * ![](https://flagcdn.com/20x15/rs.png)Serbia+381
+  * ![](https://flagcdn.com/20x15/sc.png)Seychelles+248
+  * ![](https://flagcdn.com/20x15/sl.png)Sierra Leone+232
+  * ![](https://flagcdn.com/20x15/sg.png)Singapore+65
+  * ![](https://flagcdn.com/20x15/sx.png)Sint Maarten+1
+  * ![](https://flagcdn.com/20x15/sk.png)Slovakia+421
+  * ![](https://flagcdn.com/20x15/si.png)Slovenia+386
+  * ![](https://flagcdn.com/20x15/sb.png)Solomon Islands+677
+  * ![](https://flagcdn.com/20x15/so.png)Somalia+252
+  * ![](https://flagcdn.com/20x15/za.png)South Africa+27
+  * ![](https://flagcdn.com/20x15/kr.png)South Korea+82
+  * ![](https://flagcdn.com/20x15/ss.png)South Sudan+211
+  * ![](https://flagcdn.com/20x15/es.png)Spain+34
+  * ![](https://flagcdn.com/20x15/lk.png)Sri Lanka+94
+  * ![](https://flagcdn.com/20x15/sd.png)Sudan+249
+  * ![](https://flagcdn.com/20x15/sr.png)Suriname+597
+  * ![](https://flagcdn.com/20x15/sz.png)Eswatini+268
+  * ![](https://flagcdn.com/20x15/se.png)Sweden+46
+  * ![](https://flagcdn.com/20x15/ch.png)Switzerland+41
+  * ![](https://flagcdn.com/20x15/sy.png)Syria+963
+  * ![](https://flagcdn.com/20x15/tw.png)Taiwan+886
+  * ![](https://flagcdn.com/20x15/tj.png)Tajikistan+992
+  * ![](https://flagcdn.com/20x15/tz.png)Tanzania+255
+  * ![](https://flagcdn.com/20x15/th.png)Thailand+66
+  * ![](https://flagcdn.com/20x15/tg.png)Togo+228
+  * ![](https://flagcdn.com/20x15/tk.png)Tokelau+690
+  * ![](https://flagcdn.com/20x15/to.png)Tonga+676
+  * ![](https://flagcdn.com/20x15/tt.png)Trinidad and Tobago+1
+  * ![](https://flagcdn.com/20x15/tn.png)Tunisia+216
+  * ![](https://flagcdn.com/20x15/tr.png)Turkey+90
+  * ![](https://flagcdn.com/20x15/tm.png)Turkmenistan+993
+  * ![](https://flagcdn.com/20x15/tc.png)Turks and Caicos Islands+1
+  * ![](https://flagcdn.com/20x15/tv.png)Tuvalu+688
+  * ![](https://flagcdn.com/20x15/vi.png)U.S. Virgin Islands+1
+  * ![](https://flagcdn.com/20x15/ug.png)Uganda+256
+  * ![](https://flagcdn.com/20x15/ua.png)Ukraine+380
+  * ![](https://flagcdn.com/20x15/ae.png)United Arab Emirates+971
+  * ![](https://flagcdn.com/20x15/gb.png)United Kingdom+44
+  * ![](https://flagcdn.com/20x15/us.png)United States+1
+  * ![](https://flagcdn.com/20x15/uy.png)Uruguay+598
+  * ![](https://flagcdn.com/20x15/uz.png)Uzbekistan+998
+  * ![](https://flagcdn.com/20x15/vu.png)Vanuatu+678
+  * ![](https://flagcdn.com/20x15/va.png)Vatican City+39
+  * ![](https://flagcdn.com/20x15/ve.png)Venezuela+58
+  * ![](https://flagcdn.com/20x15/vn.png)Vietnam+84
+  * ![](https://flagcdn.com/20x15/wf.png)Wallis and Futuna+681
+  * ![](https://flagcdn.com/20x15/ye.png)Yemen+967
+  * ![](https://flagcdn.com/20x15/zm.png)Zambia+260
+  * ![](https://flagcdn.com/20x15/zw.png)Zimbabwe+263
+
+
++91
+Start Chat 
