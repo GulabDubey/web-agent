@@ -10,7 +10,6 @@ from app.core.domains import LOCAL_HOSTS, local_domain, normalize_domain, parse_
 from app.core.exceptions import AppException
 from app.services.rate_limit_service import rate_limit_service
 from app.services.subscription_service import subscription_service
-from app.services.website_crawler_service import WebsiteCrawlerService
 from app.services.widget_token_service import WidgetClaims, widget_token_service
 
 logger = logging.getLogger(__name__)
@@ -29,7 +28,6 @@ class WidgetContext:
     site_key: str
     domain: str
     session_id: str
-    collection: str
 
     @property
     def scoped_session_id(self):
@@ -87,14 +85,6 @@ def request_domain(request: Request):
     return domain
 
 
-def collection_for(site_id, domain):
-    """Knowledge collection for a verified site - never taken from the request."""
-    collection = settings.WIDGET_SITE_COLLECTIONS.get(site_id)
-    if collection:
-        return collection
-    return WebsiteCrawlerService.website_slug(f"https://{domain}")
-
-
 def validate_site_key(request: Request, site_key):
     ip = client_ip(request)
     if rate_limit_service.is_blocked("badkey", ip, settings.RATE_LIMIT_INVALID_KEY_PER_IP, period=600):
@@ -141,7 +131,6 @@ async def resolve_widget_context(request: Request, claims: WidgetClaims):
         site_key=claims.site_key,
         domain=claims.domain,
         session_id=claims.session_id,
-        collection=collection_for(auth.site_id, auth.domain),
     )
 
 

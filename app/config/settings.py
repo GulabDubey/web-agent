@@ -50,6 +50,15 @@ class Settings(BaseSettings):
     DJANGO_VERIFY_FAILURE_THRESHOLD: int = 5
     DJANGO_VERIFY_COOLDOWN_SECONDS: int = 30
 
+    # --- Django database, read-only (app/services/site_collection_service.py)
+    # Each chat reads websites_website.collection_name for the verified site.
+    # Host/user/password/port default to this app's DB_* values.
+    DJANGO_DB_NAME: str = "django_app"
+    DJANGO_DB_HOST: str = ""
+    DJANGO_DB_PORT: int = 3306
+    DJANGO_DB_USER: str = ""
+    DJANGO_DB_PASSWORD: str = ""
+
     # --- Widget access tokens (app/services/widget_token_service.py) --------
     WIDGET_JWT_SECRET: str = ""
     WIDGET_TOKEN_TTL_SECONDS: int = 600
@@ -73,9 +82,6 @@ class Settings(BaseSettings):
     # Set this to make every local origin act as a registered public domain
     # instead (e.g. "companiesnext.com").
     WIDGET_DEV_DOMAIN: str = ""
-    # Knowledge collection per Django site id, as JSON: {"12": "companiesnext"}.
-    # Sites not listed use the collection named after their verified domain.
-    WIDGET_SITE_COLLECTIONS: dict[str, str] = {}
     WIDGET_MAX_MESSAGE_CHARS: int = 2000
 
     # --- Rate limits & usage (per minute unless noted) ----------------------

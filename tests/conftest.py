@@ -17,7 +17,6 @@ TEST_ENV = {
     "INTERNAL_SERVICE_TOKENS": "test-internal-token",
     "WIDGET_ALLOWED_ORIGINS": "",
     "WIDGET_DEV_DOMAIN": "",
-    "WIDGET_SITE_COLLECTIONS": "{}",
 }
 os.environ.update(TEST_ENV)
 for name in ("ANTHROPIC_API_KEY", "DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME",
@@ -107,6 +106,7 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 from app.config.settings import settings  # noqa: E402
 from app.main import app  # noqa: E402
+from app.services.site_collection_service import site_collection_service  # noqa: E402
 from app.services.subscription_service import subscription_service  # noqa: E402
 
 SITE_A = {"key": "site_" + "a" * 32, "domain": "companiesnext.com", "site_id": "11", "customer_id": "101"}
@@ -148,6 +148,17 @@ class FakeDjango:
         })
 
 
+# Rows of django_app.websites_website by id (only the columns the app reads).
+django_websites = {}
+
+
+def fake_websites_fetch(site_id):
+    row = django_websites.get(str(site_id))
+    if isinstance(row, Exception):
+        raise row
+    return types.SimpleNamespace(**row) if row else None
+
+
 @pytest.fixture
 def django():
     return FakeDjango()
@@ -159,9 +170,13 @@ def isolate(django, monkeypatch):
     fake_redis.expiry.clear()
     fake_graph.calls.clear()
     for name, value in TEST_ENV.items():
-        if name == "WIDGET_SITE_COLLECTIONS":
-            value = {}
         monkeypatch.setattr(settings, name, value)
+    django_websites.clear()
+    django_websites.update({
+        SITE_A["site_id"]: {"collection_name": "companiesnext", "is_active": 1},
+        SITE_B["site_id"]: {"collection_name": "othercustomer_kb", "is_active": 1},
+    })
+    monkeypatch.setattr(site_collection_service, "_fetch", fake_websites_fetch)
     monkeypatch.setattr(subscription_service, "_client", httpx.AsyncClient(transport=httpx.MockTransport(django.handler)))
     yield
 

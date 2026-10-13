@@ -20,8 +20,30 @@ class ChatService:
         }
 
         result = graph.invoke(state)
+        result["answer"] = self.answer_text(result.get("answer"))
 
         return {"reply": result}
+
+    @staticmethod
+    def answer_text(content):
+        """
+        Plain text of a model reply. With extended thinking the content is a
+        list of blocks ({"type": "thinking"...}, {"type": "text"...}); only
+        the text blocks are shown to visitors - thinking stays server-side.
+        """
+        if isinstance(content, str):
+            return content.strip()
+
+        if isinstance(content, list):
+            parts = []
+            for block in content:
+                if isinstance(block, str):
+                    parts.append(block)
+                elif isinstance(block, dict) and block.get("type") == "text":
+                    parts.append(block.get("text") or "")
+            return "\n\n".join(part.strip() for part in parts if part.strip())
+
+        return ""
 
     @staticmethod
     def token_usage(result, message):

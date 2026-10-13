@@ -64,9 +64,10 @@ domain, disabled site or inactive subscription · `429` rate limited
 
 ### Tenant isolation
 
-- The knowledge collection is resolved from the verified site id
-  (`WIDGET_SITE_COLLECTIONS`, else the collection named after the verified
-  domain). The browser never chooses it.
+- On every chat the knowledge collection is read from
+  `django_app.websites_website.collection_name` for the verified site id
+  (set it in Django admin → Chatbot websites). The browser never chooses it;
+  a site without one gets `403 no_knowledge_base`.
 - Chat sessions and history are keyed by `site_id:session_id`. The session id
   comes from the token, so a `session_id` in a request body is ignored.
 

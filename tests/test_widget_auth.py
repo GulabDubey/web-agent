@@ -8,6 +8,7 @@ from app.config.settings import settings
 from app.main import app
 from app.services.subscription_service import SubscriptionService
 from tests.conftest import (
+    django_websites,
     SITE_A,
     SITE_B,
     auth_headers,
@@ -400,8 +401,7 @@ def test_internal_endpoints_require_service_token(client, monkeypatch):
 
 # 11. Cross-customer isolation --------------------------------------------------
 
-def test_sites_get_their_own_knowledge_and_history(client, monkeypatch):
-    monkeypatch.setattr(settings, "WIDGET_SITE_COLLECTIONS", {SITE_B["site_id"]: "othercustomer_kb"})
+def test_sites_get_their_own_knowledge_and_history(client):
     token_a = start_session(client).json()["data"]["token"]
     token_b = start_session(client, site=SITE_B).json()["data"]["token"]
 
@@ -558,3 +558,77 @@ def test_cors_only_on_widget_endpoints(client):
 
     response = client.options("/api/v1/users", headers=preflight)
     assert "access-control-allow-origin" not in response.headers
+
+
+# Knowledge collection comes from Django's websites table -----------------------
+
+def test_chat_reads_collection_name_from_django_on_every_message(client, session_token):
+    assert chat(client, session_token).json()["data"]["message"] == "answer from companiesnext"
+
+    django_websites[SITE_A["site_id"]]["collection_name"] = "FlaskshopV2"  # changed in admin
+    assert chat(client, session_token).json()["data"]["message"] == "answer from FlaskshopV2"
+
+
+def test_site_without_collection_name_is_refused_before_ai(client, session_token):
+    for value in ("", None, "bad name; DROP TABLE", "x" * 101):
+        django_websites[SITE_A["site_id"]]["collection_name"] = value
+        response = chat(client, session_token)
+        assert response.status_code == 403, value
+        assert response.json()["code"] == "no_knowledge_base"
+    assert fake_graph.calls == []
+
+
+def test_missing_or_inactive_site_row_is_refused(client, session_token):
+    django_websites[SITE_A["site_id"]]["is_active"] = 0
+    assert chat(client, session_token).json()["code"] == "site_disabled"
+    del django_websites[SITE_A["site_id"]]
+    assert chat(client, session_token).status_code == 403
+    assert fake_graph.calls == []
+
+
+def test_django_database_error_fails_closed(client, session_token):
+    django_websites[SITE_A["site_id"]] = ConnectionError("mysql down")
+    response = chat(client, session_token)
+    assert response.status_code == 503
+    assert "mysql" not in response.text
+    assert fake_graph.calls == []
+
+
+# Model replies are returned as plain text ----------------------------------------
+
+def test_answer_text_keeps_only_text_blocks():
+    from app.services.chat_service import ChatService
+
+    blocks = [
+        {"type": "thinking", "thinking": "secret reasoning", "signature": "abc"},
+        {"type": "text", "text": "- First point"},
+        {"type": "text", "text": "Second part"},
+    ]
+    assert ChatService.answer_text(blocks) == "- First point\n\nSecond part"
+    assert ChatService.answer_text("  plain  ") == "plain"
+    assert ChatService.answer_text(None) == ""
+
+
+def test_chat_never_returns_thinking_blocks(client, session_token, monkeypatch):
+    def invoke(state):
+        return {**state, "answer": [{"type": "thinking", "thinking": "hidden", "signature": "sig"},
+                                    {"type": "text", "text": "Visible answer"}], "meta_data": None}
+
+    monkeypatch.setattr(fake_graph, "invoke", invoke)
+    response = chat(client, session_token)
+    assert response.json()["data"] == {"message": "Visible answer"}
+    assert "hidden" not in response.text and "sig" not in response.text
+
+
+def test_empty_answer_gets_friendly_fallback(client, session_token, monkeypatch):
+    monkeypatch.setattr(fake_graph, "invoke", lambda state: {**state, "answer": [], "meta_data": None})
+    message = chat(client, session_token).json()["data"]["message"]
+    assert isinstance(message, str) and message
+
+
+def test_contact_form_accepts_international_numbers(client, session_token):
+    payload = {"name": "Test User", "email": "t@example.com", "country_code": "+44", "contact": "7911123456"}
+    headers = auth_headers(session_token, SITE_A["domain"])
+    assert client.post("/api/v1/contact-us", json=payload, headers=headers).status_code == 200
+    payload.update(country_code="+91", contact="12345")
+    assert client.post("/api/v1/contact-us", json=payload, headers=headers).status_code == 400

@@ -1,8 +1,31 @@
 (function () {
   const currentScript = document.currentScript;
-  const THEME_COLOR = currentScript.getAttribute("data-theme-color") || "#343a40";
-  const SITE_KEY = (currentScript.getAttribute("data-site-key") || "").trim();
   const BASE_URL = new URL(currentScript.src).origin;
+  const attr = (name) => (currentScript.getAttribute(name) || "").trim();
+
+  // Embed options (all optional except data-site-key):
+  //   data-theme-color   brand colour, e.g. "#343a40"
+  //   data-bot-name      header title, e.g. "Acme Assistant"
+  //   data-welcome       first message after the lead form
+  //   data-suggestions   quick questions separated by "|"
+  //   data-position      "right" (default) or "left"
+  const SITE_KEY = attr("data-site-key");
+  const CONFIG = {
+    themeColor: attr("data-theme-color") || "#343a40",
+    botName: attr("data-bot-name") || "AI Assistant",
+    welcome: attr("data-welcome"),
+    suggestions: attr("data-suggestions")
+      .split("|")
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .slice(0, 4),
+    position: attr("data-position") === "left" ? "left" : "right",
+  };
+
+  // Pinned versions: a moving "latest" URL could change what runs here.
+  const MARKED_URL = "https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js";
+  const PURIFY_URL = "https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js";
+
   function loadScript(src) {
     return new Promise((resolve, reject) => {
       // Prevent loading twice
@@ -14,6 +37,7 @@
       const script = document.createElement("script");
       script.src = src;
       script.async = true;
+      script.crossOrigin = "anonymous";
 
       script.onload = resolve;
       script.onerror = reject;
@@ -31,7 +55,7 @@
     // Create container
     const container = document.createElement("div");
     container.id = "chatbot-root";
-    container.className = "cnai-root";
+    container.className = CONFIG.position === "left" ? "cnai-root cnai-left" : "cnai-root";
     document.body.appendChild(container);
 
     // Load CSS and wait for it before painting any markup into the
@@ -48,17 +72,24 @@
 
     const api = createApiClient(BASE_URL, SITE_KEY);
 
+    // Markdown libraries are optional: without them replies render as
+    // plain text, so a blocked CDN never breaks the chat.
+    const libraries = Promise.all([
+      loadScript(MARKED_URL).catch(() => null),
+      loadScript(PURIFY_URL).catch(() => null),
+    ]);
+
     // The chatbot is only shown once the backend has authorized this site
     // key on this domain (active subscription).
     Promise.all([
       api.startSession(),
       cssLoad,
-      loadScript("https://cdn.jsdelivr.net/npm/marked/marked.min.js"),
+      libraries,
       fetch(`${BASE_URL}/widget/chat.html`).then((res) => res.text()),
     ])
       .then(([, , , html]) => {
         container.innerHTML = html;
-        initChatbot(container, api, THEME_COLOR);
+        initChatbot(container, api, CONFIG);
       })
       .catch((err) => {
         container.remove();
@@ -261,57 +292,111 @@ function cnaiFlagImg(iso2, size, className) {
   return img;
 }
 
-function initChatbot(root, api, THEME_COLOR) {
-  if (window.marked) {
-    // gfm: bullet/numbered lists, bold, italic, links etc.
-    // breaks: single newlines from the LLM become <br> instead of being ignored.
-    marked.setOptions({ gfm: true, breaks: true });
+
+// Readable text colour (#fff or near-black) for a background colour.
+function cnaiTextOn(color) {
+  const probe = document.createElement("span");
+  probe.style.color = color;
+  document.body.appendChild(probe);
+  const rgb = getComputedStyle(probe).color.match(/\d+(\.\d+)?/g) || [0, 0, 0];
+  probe.remove();
+  const [r, g, b] = rgb.slice(0, 3).map((value) => {
+    const channel = Number(value) / 255;
+    return channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
+  });
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 0.45 ? "#0f172a" : "#ffffff";
+}
+
+// Bot replies are Markdown from the model, which may echo crawled website
+// text - so the HTML is always sanitized. Without the libraries it falls
+// back to plain text rather than rendering anything unsanitized.
+function cnaiRenderMarkdown(el, text) {
+  if (window.marked && window.DOMPurify) {
+    const html = window.marked.parse(text, { gfm: true, breaks: true });
+    el.innerHTML = window.DOMPurify.sanitize(html, {
+      ALLOWED_TAGS: [
+        "p", "br", "strong", "b", "em", "i", "u", "a", "ul", "ol", "li", "code", "pre",
+        "blockquote", "h1", "h2", "h3", "h4", "hr", "table", "thead", "tbody", "tr", "th", "td",
+      ],
+      ALLOWED_ATTR: ["href", "title"],
+    });
+    el.querySelectorAll("a").forEach((link) => {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer nofollow";
+    });
+  } else {
+    el.textContent = text;
   }
+}
 
-  const chatWindow = root.querySelector("#chat-window");
-  const chatToggle = root.querySelector("#chat-toggle");
-  const chatClose = root.querySelector("#chat-close");
-  const chatInput = root.querySelector("#chat-input");
-  const chatBody = root.querySelector(".cnai-body");
-  const chatMessages = root.querySelector("#cnai-messages");
+const CNAI_BOT_ICON =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="4" />' +
+  '<circle cx="9.5" cy="13" r="1.5" /><circle cx="14.5" cy="13" r="1.5" /><path d="M12 7V4" /></svg>';
 
-  const leadForm = root.querySelector("#cnai-lead-form");
-  const leadName = root.querySelector("#cnai-name");
-  const leadEmail = root.querySelector("#cnai-email");
-  const leadContact = root.querySelector("#cnai-contact");
-  const leadError = root.querySelector("#cnai-lead-error");
-  const leadSubmit = root.querySelector("#cnai-lead-submit");
+const CNAI_MAX_MESSAGE_CHARS = 2000;
 
-  const countryPicker = root.querySelector("#cnai-country-picker");
-  const countryToggle = root.querySelector("#cnai-country-toggle");
-  const countryFlag = root.querySelector("#cnai-country-flag");
-  const countryDropdown = root.querySelector("#cnai-country-dropdown");
-  const countrySearch = root.querySelector("#cnai-country-search");
-  const countryList = root.querySelector("#cnai-country-list");
-  const dialCodeEl = root.querySelector("#cnai-dial-code");
+function initChatbot(root, api, config) {
+  const $ = (selector) => root.querySelector(selector);
+
+  const chatWindow = $("#chat-window");
+  const chatToggle = $("#chat-toggle");
+  const chatClose = $("#chat-close");
+  const chatBody = $(".cnai-body");
+  const chatMessages = $("#cnai-messages");
+  const suggestions = $("#cnai-suggestions");
+  const composer = $("#cnai-composer");
+  const chatInput = $("#chat-input");
+  const sendButton = $("#cnai-send");
+  const counter = $("#cnai-counter");
+
+  const leadForm = $("#cnai-lead-form");
+  const leadName = $("#cnai-name");
+  const leadEmail = $("#cnai-email");
+  const leadContact = $("#cnai-contact");
+  const leadError = $("#cnai-lead-error");
+  const leadSubmit = $("#cnai-lead-submit");
+
+  const countryPicker = $("#cnai-country-picker");
+  const countryToggle = $("#cnai-country-toggle");
+  const countryFlag = $("#cnai-country-flag");
+  const countryDropdown = $("#cnai-country-dropdown");
+  const countrySearch = $("#cnai-country-search");
+  const countryList = $("#cnai-country-list");
+  const contactWrap = $(".cnai-contact-input-wrap");
+  const dialCodeEl = $("#cnai-dial-code");
 
   let selectedCountry = CNAI_COUNTRIES.find((c) => c[0] === "IN") || CNAI_COUNTRIES[0];
+  let sending = false;
 
-  document.documentElement.style.setProperty("--theme-color", THEME_COLOR);
+  root.style.setProperty("--theme-color", config.themeColor);
+  root.style.setProperty("--cnai-on-theme", cnaiTextOn(config.themeColor));
+  $("#cnai-heading").textContent = config.botName;
+  chatWindow.setAttribute("aria-label", config.botName);
 
   // Gate the chat behind the lead capture form until it's submitted.
   chatWindow.classList.add("cnai-lead-active");
 
+  /* ---------------- Country picker ---------------- */
+
   function selectCountry(country) {
     selectedCountry = country;
     countryFlag.innerHTML = "";
-    countryFlag.appendChild(
-      cnaiFlagImg(country[0], "24x18", "cnai-flag-img cnai-flag-img-toggle"),
-    );
+    countryFlag.appendChild(cnaiFlagImg(country[0], "24x18", "cnai-flag-img cnai-flag-img-toggle"));
+    countryToggle.setAttribute("aria-label", `Country code: ${country[1]} +${country[2]}`);
     dialCodeEl.textContent = `+${country[2]}`;
+    closeCountryDropdown();
+  }
+
+  function closeCountryDropdown() {
     countryToggle.setAttribute("aria-expanded", "false");
     countryDropdown.classList.remove("show");
   }
 
   function renderCountryList(filter) {
-    const query = (filter || "").trim().toLowerCase();
+    const query = (filter || "").trim().toLowerCase().replace(/^\+/, "");
     const matches = CNAI_COUNTRIES.filter(
-      (c) => !query || c[1].toLowerCase().includes(query) || c[2].includes(query),
+      (c) => !query || c[1].toLowerCase().includes(query) || c[2].startsWith(query),
     );
 
     countryList.innerHTML = "";
@@ -327,6 +412,11 @@ function initChatbot(root, api, THEME_COLOR) {
     matches.forEach((country) => {
       const li = document.createElement("li");
       li.setAttribute("role", "option");
+      li.tabIndex = -1;
+      if (country === selectedCountry) {
+        li.classList.add("cnai-active");
+        li.setAttribute("aria-selected", "true");
+      }
 
       const flagEl = document.createElement("span");
       flagEl.className = "cnai-country-list-flag";
@@ -340,12 +430,11 @@ function initChatbot(root, api, THEME_COLOR) {
       dialEl.className = "cnai-country-list-dial";
       dialEl.textContent = `+${country[2]}`;
 
-      li.appendChild(flagEl);
-      li.appendChild(nameEl);
-      li.appendChild(dialEl);
-
-      li.addEventListener("click", () => selectCountry(country));
-
+      li.append(flagEl, nameEl, dialEl);
+      li.addEventListener("click", () => {
+        selectCountry(country);
+        leadContact.focus();
+      });
       countryList.appendChild(li);
     });
   }
@@ -364,24 +453,52 @@ function initChatbot(root, api, THEME_COLOR) {
     }
   });
 
-  countrySearch.addEventListener("input", () => {
-    renderCountryList(countrySearch.value);
-  });
-
-  countrySearch.addEventListener("click", (event) => {
-    event.stopPropagation();
+  countrySearch.addEventListener("input", () => renderCountryList(countrySearch.value));
+  countrySearch.addEventListener("click", (event) => event.stopPropagation());
+  countrySearch.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      // Enter picks the first match instead of submitting the form.
+      event.preventDefault();
+      const first = countryList.querySelector("li[role=option]");
+      if (first) first.click();
+    }
   });
 
   document.addEventListener("click", (event) => {
     if (!countryPicker.contains(event.target)) {
-      countryDropdown.classList.remove("show");
-      countryToggle.setAttribute("aria-expanded", "false");
+      closeCountryDropdown();
     }
   });
 
+  /* ---------------- Lead form ---------------- */
+
   leadContact.addEventListener("input", () => {
-    leadContact.value = leadContact.value.replace(/\D/g, "").slice(0, 10);
+    leadContact.value = leadContact.value.replace(/\D/g, "").slice(0, 14);
+    contactWrap.classList.remove("cnai-invalid");
   });
+
+  [leadName, leadEmail].forEach((input) =>
+    input.addEventListener("input", () => input.removeAttribute("aria-invalid")),
+  );
+
+  function validateLead(name, email, contact) {
+    if (name.length < 3) {
+      return { field: leadName, message: "Please enter your full name." };
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return { field: leadEmail, message: "Please enter a valid email address." };
+    }
+    const phoneOk = selectedCountry[0] === "IN" ? /^[6-9]\d{9}$/.test(contact) : /^\d{6,14}$/.test(contact);
+    if (!phoneOk) {
+      return {
+        field: leadContact,
+        message: selectedCountry[0] === "IN"
+          ? "Please enter a valid 10-digit mobile number."
+          : "Please enter a valid phone number.",
+      };
+    }
+    return null;
+  }
 
   leadForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -391,16 +508,21 @@ function initChatbot(root, api, THEME_COLOR) {
     const countryCode = `+${selectedCountry[2]}`;
     const contact = leadContact.value.trim();
 
-    const validationError = validateLead(name, email, contact);
-
-    if (validationError) {
-      leadError.textContent = validationError;
+    const invalid = validateLead(name, email, contact);
+    if (invalid) {
+      leadError.textContent = invalid.message;
+      if (invalid.field === leadContact) {
+        contactWrap.classList.add("cnai-invalid");
+      } else {
+        invalid.field.setAttribute("aria-invalid", "true");
+      }
+      invalid.field.focus();
       return;
     }
 
     leadError.textContent = "";
     leadSubmit.disabled = true;
-    leadSubmit.textContent = "Please wait...";
+    leadSubmit.textContent = "Starting\u2026";
 
     try {
       const result = await api.post("/api/v1/contact-us", {
@@ -415,152 +537,265 @@ function initChatbot(root, api, THEME_COLOR) {
       }
 
       chatWindow.classList.remove("cnai-lead-active");
-      addUserMessage(`${name} | ${email} | ${countryCode} ${contact}`);
-      addBotMessage(result.message);
-      chatInput.disabled = false;
-      chatInput.focus();
+      const firstName = name.split(/\s+/)[0];
+      addBotMessage(
+        config.welcome || `Thanks, ${firstName}! ${result.message}`,
+      );
+      showSuggestions();
+      enableComposer();
     } catch (error) {
-      console.error("Lead form error:", error);
-      leadError.textContent =
-        error.message || "Sorry, something went wrong. Please try again.";
+      leadError.textContent = error.message || "Sorry, something went wrong. Please try again.";
     } finally {
       leadSubmit.disabled = false;
-      leadSubmit.textContent = "Start Chat";
+      leadSubmit.textContent = "Start chat";
     }
   });
 
-  function validateLead(name, email, contact) {
-    if (name.length < 3) {
-      return "Please enter a valid name.";
-    }
+  /* ---------------- Open / close ---------------- */
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return "Please enter a valid email address.";
-    }
+  function isOpen() {
+    return chatWindow.classList.contains("show");
+  }
 
-    if (!/^[6-9]\d{9}$/.test(contact)) {
-      return "Please enter a valid 10-digit mobile number.";
-    }
-
-    return null;
+  function focusFirstField() {
+    const target = chatWindow.classList.contains("cnai-lead-active") ? leadName : chatInput;
+    if (!target.disabled) target.focus({ preventScroll: true });
   }
 
   function openChatWindow() {
     // Add display:flex first, then "show" on the next frame so the
     // opacity/transform transition actually animates instead of jumping.
     chatWindow.classList.add("cnai-visible");
+    chatToggle.classList.add("cnai-open");
+    chatToggle.setAttribute("aria-expanded", "true");
+    chatToggle.setAttribute("aria-label", "Close chat");
     requestAnimationFrame(() => {
       chatWindow.classList.add("show");
+      focusFirstField();
     });
   }
 
   function closeChatWindow() {
-    if (!chatWindow.classList.contains("show")) {
+    if (!isOpen()) {
       return;
     }
 
     chatWindow.classList.remove("show");
+    chatToggle.classList.remove("cnai-open");
+    chatToggle.setAttribute("aria-expanded", "false");
+    chatToggle.setAttribute("aria-label", "Open chat");
 
-    // Wait for the fade/slide-out transition to finish before switching
-    // back to display:none, so the window disappears cleanly instead of
-    // snapping away mid-animation.
-    const onTransitionEnd = (event) => {
-      if (event.target !== chatWindow) {
-        return;
-      }
-      chatWindow.classList.remove("cnai-visible");
-      chatWindow.removeEventListener("transitionend", onTransitionEnd);
+    // Wait for the fade-out before switching back to display:none.
+    // The timeout covers reduced-motion, where no transition runs.
+    const hide = () => {
+      if (!isOpen()) chatWindow.classList.remove("cnai-visible");
     };
-    chatWindow.addEventListener("transitionend", onTransitionEnd);
+    chatWindow.addEventListener("transitionend", hide, { once: true });
+    setTimeout(hide, 300);
   }
 
-  chatToggle.addEventListener("click", () => {
-    if (chatWindow.classList.contains("show")) {
-      closeChatWindow();
-    } else {
-      openChatWindow();
-    }
-  });
+  chatToggle.addEventListener("click", () => (isOpen() ? closeChatWindow() : openChatWindow()));
 
   chatClose.addEventListener("click", () => {
     closeChatWindow();
+    chatToggle.focus();
   });
 
-  document.addEventListener("click", (event) => {
-    if (!chatWindow.classList.contains("show")) {
-      return;
+  chatWindow.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (countryDropdown.classList.contains("show")) {
+      closeCountryDropdown();
+      countryToggle.focus();
+    } else {
+      closeChatWindow();
+      chatToggle.focus();
     }
-
-    if (chatWindow.contains(event.target) || chatToggle.contains(event.target)) {
-      return;
-    }
-
-    closeChatWindow();
   });
 
-  chatInput.addEventListener("keydown", async function (event) {
-    if (event.key !== "Enter") {
-      return;
-    }
+  /* ---------------- Composer ---------------- */
 
+  function enableComposer() {
+    chatInput.disabled = false;
+    updateComposer();
+    chatInput.focus();
+  }
+
+  function autosize() {
+    chatInput.style.setProperty("height", "auto", "important");
+    const height = Math.min(Math.max(chatInput.scrollHeight, 34), 120);
+    chatInput.style.setProperty("height", `${height}px`, "important");
+  }
+
+  function updateComposer() {
+    const length = chatInput.value.length;
+    const over = length > CNAI_MAX_MESSAGE_CHARS;
+    sendButton.disabled = sending || chatInput.disabled || !chatInput.value.trim() || over;
+
+    // Only show the counter when it matters.
+    counter.hidden = length < CNAI_MAX_MESSAGE_CHARS * 0.8;
+    counter.textContent = `${length}/${CNAI_MAX_MESSAGE_CHARS}`;
+    counter.classList.toggle("cnai-over", over);
+    autosize();
+  }
+
+  chatInput.addEventListener("input", updateComposer);
+
+  chatInput.addEventListener("keydown", (event) => {
+    // Enter sends; Shift+Enter adds a line. Ignore Enter while an IME
+    // (e.g. Hindi/Japanese input) is composing a word.
+    if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+      event.preventDefault();
+      composer.requestSubmit();
+    }
+  });
+
+  composer.addEventListener("submit", (event) => {
     event.preventDefault();
-
     const message = chatInput.value.trim();
-
-    if (!message) {
+    if (!message || sending || message.length > CNAI_MAX_MESSAGE_CHARS) {
       return;
     }
-
-    addUserMessage(message);
-
-    // Clear input immediately
     chatInput.value = "";
-    chatInput.disabled = true;
-
-    const loadingEl = addLoadingMessage();
-
-    try {
-      const result = await api.post("/api/v1/chat", { message: message });
-      removeLoadingMessage(loadingEl);
-      addBotMessage(result.message);
-    } catch (error) {
-      console.error("Chat API Error:", error);
-      removeLoadingMessage(loadingEl);
-      addBotMessage("Sorry, I couldn't reach the server. Please try again.");
-    } finally {
-      chatInput.disabled = false;
-      chatInput.focus();
-    }
+    updateComposer();
+    sendMessage(message);
   });
+
+  /* ---------------- Suggestions ---------------- */
+
+  function showSuggestions() {
+    if (!config.suggestions.length) return;
+    suggestions.innerHTML = "";
+    config.suggestions.forEach((text) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "cnai-chip";
+      chip.textContent = text;
+      chip.addEventListener("click", () => sendMessage(text));
+      suggestions.appendChild(chip);
+    });
+    suggestions.hidden = false;
+  }
+
+  /* ---------------- Messages ---------------- */
+
+  function timeLabel() {
+    return new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+
+  function addRow(kind) {
+    const row = document.createElement("div");
+    row.className = `cnai-row cnai-row-${kind}`;
+
+    if (kind === "ai") {
+      const avatar = document.createElement("div");
+      avatar.className = "cnai-row-avatar";
+      avatar.innerHTML = CNAI_BOT_ICON;
+      row.appendChild(avatar);
+    }
+
+    const stack = document.createElement("div");
+    stack.className = "cnai-stack";
+    row.appendChild(stack);
+    chatMessages.appendChild(row);
+    return stack;
+  }
+
+  function addMeta(stack, label) {
+    const meta = document.createElement("div");
+    meta.className = "cnai-meta";
+    meta.textContent = label;
+    stack.appendChild(meta);
+    return meta;
+  }
+
+  function scrollToBottom() {
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
 
   function addUserMessage(message) {
-    const el = document.createElement("div");
-    el.className = "cnai-message cnai-message-user";
-    el.textContent = message;
-    chatMessages.appendChild(el);
-    chatBody.scrollTop = chatBody.scrollHeight;
+    const stack = addRow("user");
+    const bubble = document.createElement("div");
+    bubble.className = "cnai-message cnai-message-user";
+    bubble.textContent = message;
+    stack.appendChild(bubble);
+    addMeta(stack, timeLabel());
+    scrollToBottom();
   }
 
   function addBotMessage(message) {
-    const el = document.createElement("div");
-    el.className = "cnai-message cnai-message-ai";
-    el.innerHTML = marked.parse(message);
-    chatMessages.appendChild(el);
-    chatBody.scrollTop = chatBody.scrollHeight;
+    const stack = addRow("ai");
+    const bubble = document.createElement("div");
+    bubble.className = "cnai-message cnai-message-ai";
+    cnaiRenderMarkdown(bubble, typeof message === "string" ? message : String(message || ""));
+    stack.appendChild(bubble);
+    addMeta(stack, `${config.botName} \u00b7 ${timeLabel()}`);
+
+    // Long answers: show the start of the reply, not its end.
+    const row = stack.parentNode;
+    chatBody.scrollTop = Math.max(0, row.offsetTop - chatBody.offsetTop - 12);
+    if (chatBody.scrollTop + chatBody.clientHeight >= chatBody.scrollHeight - 4) {
+      scrollToBottom();
+    }
   }
 
-  function addLoadingMessage() {
-    const el = document.createElement("div");
-    el.className = "cnai-message cnai-message-ai cnai-message-loading";
-    el.innerHTML = `<span class="cnai-dot"></span><span class="cnai-dot"></span><span class="cnai-dot"></span>`;
-    chatMessages.appendChild(el);
-    chatBody.scrollTop = chatBody.scrollHeight;
-    return el;
+  function addErrorMessage(text, retry) {
+    const stack = addRow("ai");
+    const bubble = document.createElement("div");
+    bubble.className = "cnai-message cnai-message-ai cnai-message-error";
+    bubble.textContent = text;
+    stack.appendChild(bubble);
+
+    const meta = addMeta(stack, timeLabel());
+    if (retry) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "cnai-retry";
+      button.textContent = "Retry";
+      button.addEventListener("click", () => {
+        stack.parentNode.remove();
+        retry();
+      });
+      meta.appendChild(button);
+    }
+    scrollToBottom();
   }
 
-  function removeLoadingMessage(el) {
-    if (el && el.parentNode) {
-      el.parentNode.removeChild(el);
+  function addTypingIndicator() {
+    const stack = addRow("ai");
+    const bubble = document.createElement("div");
+    bubble.className = "cnai-message cnai-message-ai cnai-typing";
+    bubble.setAttribute("aria-label", `${config.botName} is typing`);
+    bubble.innerHTML = '<span class="cnai-dot"></span><span class="cnai-dot"></span><span class="cnai-dot"></span>';
+    stack.appendChild(bubble);
+    scrollToBottom();
+    return stack.parentNode;
+  }
+
+  async function sendMessage(message, isRetry) {
+    if (sending) return;
+
+    if (!isRetry) addUserMessage(message);
+    suggestions.hidden = true;
+    sending = true;
+    updateComposer();
+
+    const typing = addTypingIndicator();
+
+    try {
+      const result = await api.post("/api/v1/chat", { message: message });
+      typing.remove();
+      if (result.ok) {
+        addBotMessage(result.message);
+      } else {
+        addErrorMessage(result.message, () => sendMessage(message, true));
+      }
+    } catch (error) {
+      typing.remove();
+      addErrorMessage("Couldn't reach the server. Check your connection.", () => sendMessage(message, true));
+    } finally {
+      sending = false;
+      updateComposer();
+      if (isOpen()) chatInput.focus({ preventScroll: true });
     }
   }
 }

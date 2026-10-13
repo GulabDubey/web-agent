@@ -13,6 +13,7 @@ from app.services.website_crawler_service import WebsiteCrawlerService
 from app.core.response import ApiResponse
 from app.services.question_service import QuestionService
 from app.services.rate_limit_service import rate_limit_service
+from app.services.site_collection_service import site_collection_service
 from app.config.question_config import QUESTIONS
 from pathlib import Path
 
@@ -33,8 +34,8 @@ async def contact_us(request: ContactUsRequest, widget: WidgetContext = Depends(
     if not ValidatorService.email(request.email):
         return ApiResponse.error(message="Please enter a valid email address.")
 
-    if not ValidatorService.mobile(request.contact):
-        return ApiResponse.error(message="Please enter a valid 10-digit mobile number.")
+    if not ValidatorService.mobile(request.contact, request.country_code):
+        return ApiResponse.error(message="Please enter a valid mobile number.")
 
     session.answers["name"] = request.name
     session.answers["email"] = request.email
@@ -64,14 +65,19 @@ async def chat(request: ChatRequest, http_request: Request, widget: WidgetContex
     rate_limit_service.hit("chat:site", widget.site_id, settings.RATE_LIMIT_CHAT_PER_SITE)
     rate_limit_service.check_token_budget(widget.site_id, settings.WIDGET_DAILY_TOKEN_LIMIT_PER_SITE)
 
+    # Knowledge base of the verified site, read from Django's websites table.
+    collection = await site_collection_service.collection_for(widget.site_id)
+
     rate_limit_service.acquire_slot("chat", widget.site_id, settings.WIDGET_MAX_CONCURRENT_PER_SITE)
     try:
         redis_service.add(widget.scoped_session_id, "user", request.message)
-        result = await chat_service.generate_reply(request.message, widget.collection)
+        result = await chat_service.generate_reply(request.message, collection)
     finally:
         rate_limit_service.release_slot("chat", widget.site_id)
 
-    answer = result["reply"]["answer"]
+    answer = result["reply"]["answer"] or (
+        "Sorry, I couldn't put together an answer to that. Could you rephrase your question?"
+    )
     redis_service.add(widget.scoped_session_id, "assistant", answer)
     rate_limit_service.add_token_usage(widget.site_id, chat_service.token_usage(result, request.message))
 
