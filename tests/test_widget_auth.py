@@ -378,8 +378,6 @@ def test_direct_api_calls_without_auth_are_rejected(client):
 
 def test_internal_endpoints_require_service_token(client, monkeypatch):
     requests = [
-        ("post", "/api/v1/extract-website-data", {"url": "https://example.com"}),
-        ("post", "/api/v1/ingest-documents", None),
         ("get", "/api/v1/users", None),
         ("get", "/api/v1/users/1", None),
         ("post", "/api/v1/internal/widget/invalidate", {"site_key": SITE_A["key"]}),
@@ -396,7 +394,7 @@ def test_internal_endpoints_require_service_token(client, monkeypatch):
     assert response.status_code == 401
 
     monkeypatch.setattr(settings, "INTERNAL_SERVICE_TOKENS", "")
-    assert client.post("/api/v1/ingest-documents").status_code == 503
+    assert client.get("/api/v1/users").status_code == 503
 
 
 # 11. Cross-customer isolation --------------------------------------------------

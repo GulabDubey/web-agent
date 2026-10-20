@@ -31,7 +31,7 @@ decides eligibility itself.
    carrying the site, customer, domain, and a server-generated chat session id.
    The widget only renders after this succeeds.
 5. Every chat request verifies the JWT, checks that `Origin` matches the token's
-   domain, re-checks the subscription with Django (answers cached in Redis for
+   domain, re-checks the subscription with Django (answers cached in memory for
    `WIDGET_AUTH_CACHE_TTL_SECONDS`), and applies rate limits, all before the
    AI is called.
 
@@ -49,8 +49,6 @@ it. Authorization always comes from the site key or token plus Django's answer.
 | `POST /api/v1/widget/token/refresh` | widget token (may be expired up to `WIDGET_TOKEN_REFRESH_GRACE_SECONDS`) | New token, same chat session |
 | `POST /api/v1/contact-us` | widget token | Lead form |
 | `POST /api/v1/chat` | widget token | Chat message (AI) |
-| `POST /api/v1/extract-website-data` | service token | Crawl a site (called by Django) |
-| `POST /api/v1/ingest-documents` | service token | Ingest local files |
 | `GET/POST /api/v1/users…` | service token | User records |
 | `POST /api/v1/internal/widget/invalidate` | service token | Drop cached authorization for a site key (e.g. after cancellation) |
 | `GET /widget/*` | public | Widget JS/CSS/HTML (serving the file grants nothing) |
@@ -91,9 +89,14 @@ accepted outside development.
 
 ## Deployment notes
 
-- Rate limits, the authorization cache, and the verification circuit breaker
-  use the existing Redis, so they hold across workers and instances. If Redis
-  is down, chat requests fail closed.
+- Rate limits, the authorization cache, chat history and the verification
+  circuit breaker live in process memory (`app/config/memory_store.py`). They
+  are per instance: not shared across workers or serverless instances, and
+  reset on restart.
+- The deployed app only queries Qdrant. Website crawling and ingestion are done
+  offline; collections must be built with `BAAI/bge-large-en-v1.5` (1024-dim,
+  normalized vectors). Query embeddings come from the Hugging Face Inference
+  API, so `HF_TOKEN` must be set.
 - Behind a reverse proxy, run uvicorn with `--proxy-headers` and
   `--forwarded-allow-ips=<proxy ip>` so per-IP limits see the real client IP.
 - Customer sites must use HTTPS in production.
@@ -104,5 +107,5 @@ accepted outside development.
 venv/bin/python -m pytest tests
 ```
 
-The Django API is mocked (`httpx.MockTransport`), and so are Redis and the AI
+The Django API is mocked (`httpx.MockTransport`), and so is the AI
 graph. No network access or credentials are needed.

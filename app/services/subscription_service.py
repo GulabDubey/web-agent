@@ -7,7 +7,7 @@ from datetime import datetime
 
 import httpx
 
-from app.config.redis import RedisClient
+from app.config.memory_store import memory_store
 from app.config.settings import settings
 from app.core.exceptions import AppException
 
@@ -51,7 +51,7 @@ def unavailable():
 class SubscriptionService:
     """
     Asks the Django project (source of truth for payments) whether a site
-    key may be used on a domain. Answers are cached briefly in Redis; any
+    key may be used on a domain. Answers are cached briefly in memory; any
     failure to get a clear answer fails closed.
     """
 
@@ -65,7 +65,7 @@ class SubscriptionService:
 
     @property
     def redis(self):
-        return self._redis or RedisClient().client
+        return self._redis or memory_store
 
     def _http(self):
         if self._client is None:

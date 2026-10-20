@@ -1,7 +1,5 @@
 from app.repositories.vector_repository import VectorRepository
 from app.services.embedding_service import EmbeddingService
-from app.services.file_parser_service import FileParserService
-from app.services.text_splitter_service import TextSplitterService
 
 class VectorService:
 
@@ -9,13 +7,9 @@ class VectorService:
         self,
         repository: VectorRepository,
         embedding_service: EmbeddingService,
-        fileParser: FileParserService,
-        textSplitter: TextSplitterService,
     ):
         self.repository = repository
         self.embedding_service = embedding_service
-        self.file_parser = fileParser
-        self.text_splitter = textSplitter
 
     def create_collection(
         self,
@@ -100,16 +94,3 @@ class VectorService:
     ):
 
         return self.repository.count(collection)
-
-    
-    def extract_texts_from_files(self, files):
-        pages = []
-        for filepath in files:
-            pagesData = self.file_parser.extract_text(filepath)
-            pages.extend(pagesData)
-        
-        return pages
-            
-    def split_text_in_chunks(self, pages):
-        chunks = self.text_splitter.split_text(pages)
-        return chunks

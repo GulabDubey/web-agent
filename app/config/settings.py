@@ -26,10 +26,6 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str
 
-    # --- Redis (app/config/redis.py) ---------------------------------------
-    REDIS_HOST: str = "localhost"
-    REDIS_PORT: int = 6379
-
     # --- Qdrant vector store (app/core/qdrant.py) ---------------------------
     QDRANT_HOST: str
     QDRANT_PORT: int

@@ -1,26 +1,20 @@
 from fastapi import APIRouter, Depends, Request
 from app.config.settings import settings
-from app.core.dependencies import get_vector_service
-from app.core.widget_auth import WidgetContext, client_ip, require_service_token, require_widget
-from app.core.exceptions import AppException
-from app.schemas.chat_schema import ChatRequest, ContactUsRequest, ExtractWebsiteDataRequest
+from app.core.widget_auth import WidgetContext, client_ip, require_widget
+from app.schemas.chat_schema import ChatRequest, ContactUsRequest
 from app.services.chat_service import ChatService
-from app.services.vector_service import VectorService
-from app.services.redis_service import RedisService
+from app.services.chat_history_service import ChatHistoryService
 from app.services.session_service import session_service
 from app.services.validator_service import ValidatorService
-from app.services.website_crawler_service import WebsiteCrawlerService
 from app.core.response import ApiResponse
 from app.services.question_service import QuestionService
 from app.services.rate_limit_service import rate_limit_service
 from app.services.site_collection_service import site_collection_service
-from app.config.question_config import QUESTIONS
-from pathlib import Path
 
 router = APIRouter()
 
 chat_service = ChatService()
-redis_service = RedisService()
+chat_history_service = ChatHistoryService()
 question_service = QuestionService()
 
 @router.post("/contact-us")
@@ -70,7 +64,7 @@ async def chat(request: ChatRequest, http_request: Request, widget: WidgetContex
 
     rate_limit_service.acquire_slot("chat", widget.site_id, settings.WIDGET_MAX_CONCURRENT_PER_SITE)
     try:
-        redis_service.add(widget.scoped_session_id, "user", request.message)
+        chat_history_service.add(widget.scoped_session_id, "user", request.message)
         result = await chat_service.generate_reply(request.message, collection)
     finally:
         rate_limit_service.release_slot("chat", widget.site_id)
@@ -78,76 +72,8 @@ async def chat(request: ChatRequest, http_request: Request, widget: WidgetContex
     answer = result["reply"]["answer"] or (
         "Sorry, I couldn't put together an answer to that. Could you rephrase your question?"
     )
-    redis_service.add(widget.scoped_session_id, "assistant", answer)
+    chat_history_service.add(widget.scoped_session_id, "assistant", answer)
     rate_limit_service.add_token_usage(widget.site_id, chat_service.token_usage(result, request.message))
 
     # Only the answer is returned; model metadata stays server-side.
     return ApiResponse.success(data={"message": answer}, message="Chat generated successfully!")
-
-@router.post("/extract-website-data", dependencies=[Depends(require_service_token)])
-async def extract_website_data(
-    request: ExtractWebsiteDataRequest,
-    vector_service: VectorService = Depends(get_vector_service),
-):
-    url = str(request.url)
-    website = request.website or WebsiteCrawlerService.website_slug(url)
-
-    try:
-        files = await WebsiteCrawlerService.crawl_and_save(
-            url,
-            website=website,
-            max_pages=request.max_pages,
-        )
-    except Exception as error:
-        raise AppException(f"Failed to crawl website: {error}", 502)
-
-    if not files:
-        raise AppException("No content could be extracted from the given URL.", 422)
-
-    pages = vector_service.extract_texts_from_files(files)
-    chunks = vector_service.split_text_in_chunks(pages)
-
-    if not chunks:
-        raise AppException("No usable text content was found on the crawled pages.", 422)
-
-    vector_service.create_collection(website)
-    vector_service.add_documents(website, chunks)
-
-    return ApiResponse.success(
-        data={
-            "website": website,
-            "pages_crawled": len(files),
-            "chunks_stored": len(chunks),
-        },
-        message="Website data extracted and stored successfully!",
-    )
-
-@router.post("/ingest-documents", dependencies=[Depends(require_service_token)])
-async def ingest_documents(vector_service: VectorService = Depends(get_vector_service)):
-    # files = [
-    #     "storage/websites/companiesnext/001_companiesnext.txt",
-    # ]
-    website = "companiesnext"
-    folder = Path(f"storage/websites/{website}")
-    folder.mkdir(parents=True, exist_ok=True)
-    files = [str(file) for file in folder.iterdir() if file.is_file()][75:]
-
-    pages = vector_service.extract_texts_from_files(files)
-    chunks = vector_service.split_text_in_chunks(pages)
-
-    # return {"message": "File parsed successfully!", "data": {"pages":pages, "chunks":chunks}}
-
-    vector_service.create_collection(website)
-    vector_service.add_documents(
-        website,
-        chunks
-    )
-
-    return {"message": "PDF injested successfully!"}
-
-    result = vector_service.similarity_search(
-        "company_docs",
-        "Do you know Gulab Dubey?"
-    )
-
-    return {"message": "Data fetched successfully!", "result": result}

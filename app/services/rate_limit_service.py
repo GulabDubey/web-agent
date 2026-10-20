@@ -1,7 +1,7 @@
 import logging
 import time
 
-from app.config.redis import RedisClient
+from app.config.memory_store import memory_store
 from app.core.exceptions import AppException
 
 logger = logging.getLogger(__name__)
@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 
 class RateLimitService:
     """
-    Fixed-window counters in the shared Redis, so limits hold across
-    workers and instances. A Redis outage fails closed (503).
+    Fixed-window counters in the in-memory store. Limits are per
+    instance (not shared across workers); a store error fails closed (503).
     """
 
     def __init__(self, redis=None):
@@ -18,7 +18,7 @@ class RateLimitService:
 
     @property
     def redis(self):
-        return self._redis or RedisClient().client
+        return self._redis or memory_store
 
     def _call(self, fn, *args):
         try:

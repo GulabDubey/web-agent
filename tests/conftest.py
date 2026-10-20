@@ -1,8 +1,6 @@
-import fnmatch
 import json
 import os
 import sys
-import time
 import types
 
 import httpx
@@ -41,66 +39,8 @@ graph_module.graph = fake_graph
 sys.modules["app.graph.chat_graph"] = graph_module
 
 
-# --- In-memory Redis with expiry, enough for the commands the app uses -------
-class FakeRedis:
-    def __init__(self):
-        self.data = {}
-        self.expiry = {}
-
-    def _alive(self, key):
-        if key in self.expiry and self.expiry[key] <= time.time():
-            self.data.pop(key, None)
-            self.expiry.pop(key, None)
-        return key in self.data
-
-    def get(self, key):
-        return self.data[key] if self._alive(key) else None
-
-    def set(self, key, value, ex=None):
-        self.data[key] = str(value)
-        if ex:
-            self.expiry[key] = time.time() + ex
-        else:
-            self.expiry.pop(key, None)
-        return True
-
-    def incrby(self, key, amount):
-        value = int(self.get(key) or 0) + amount
-        self.data[key] = str(value)
-        return value
-
-    def incr(self, key):
-        return self.incrby(key, 1)
-
-    def decr(self, key):
-        return self.incrby(key, -1)
-
-    def expire(self, key, seconds):
-        if self._alive(key):
-            self.expiry[key] = time.time() + seconds
-
-    def delete(self, *keys):
-        for key in keys:
-            self.data.pop(key, None)
-            self.expiry.pop(key, None)
-
-    def rpush(self, key, value):
-        self.data.setdefault(key, [])
-        self.data[key].append(value)
-
-    def lrange(self, key, start, end):
-        values = self.data.get(key, [])
-        return values[start:] if end == -1 else values[start:end + 1]
-
-    def keys(self, pattern="*"):
-        return [key for key in list(self.data) if self._alive(key) and fnmatch.fnmatch(key, pattern)]
-
-
-fake_redis = FakeRedis()
-
-from app.config.redis import RedisClient  # noqa: E402
-
-RedisClient().client = fake_redis
+# --- The app's in-memory store, cleared between tests ----------------------
+from app.config.memory_store import memory_store as fake_redis  # noqa: E402
 
 from fastapi.testclient import TestClient  # noqa: E402
 

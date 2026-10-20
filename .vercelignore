@@ -1,0 +1,11 @@
+venv/
+.venv/
+__pycache__/
+.pytest_cache/
+tests/
+storage/
+.env
+.env.*
+!.env.example
+notes.txt
+agent_steps.txt
