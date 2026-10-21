@@ -14,5 +14,10 @@ def get_llm(
     return ChatAnthropic(
         model=model or settings.ANTHROPIC_MODEL,
         anthropic_api_key=settings.ANTHROPIC_API_KEY,
-        max_tokens=300
+        # Current models think before answering and that thinking counts
+        # toward max_tokens, so leave headroom or replies get cut off.
+        max_tokens=2048,
+        # Short support answers don't need deep reasoning; low effort keeps
+        # thinking (and latency/cost) minimal on every current model.
+        output_config={"effort": "low"},
     )
