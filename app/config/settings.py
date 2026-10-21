@@ -27,8 +27,12 @@ class Settings(BaseSettings):
     DB_NAME: str
 
     # --- Qdrant vector store (app/core/qdrant.py) ---------------------------
-    QDRANT_HOST: str
-    QDRANT_PORT: int
+    # Qdrant Cloud: set QDRANT_URL (https://...) and QDRANT_API_KEY.
+    # Self-hosted: leave QDRANT_URL empty and use QDRANT_HOST/QDRANT_PORT.
+    QDRANT_URL: str = ""
+    QDRANT_API_KEY: str = ""
+    QDRANT_HOST: str = "localhost"
+    QDRANT_PORT: int = 6333
     QDRANT_COLLECTION: str
 
     # --- Embeddings (app/services/embedding_service.py) --------------------
