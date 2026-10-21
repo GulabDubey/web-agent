@@ -93,10 +93,10 @@ accepted outside development.
   circuit breaker live in process memory (`app/config/memory_store.py`). They
   are per instance: not shared across workers or serverless instances, and
   reset on restart.
-- The deployed app only queries Qdrant. Website crawling and ingestion are done
-  offline; collections must be built with `BAAI/bge-large-en-v1.5` (1024-dim,
-  normalized vectors). Query embeddings come from the Hugging Face Inference
-  API, so `HF_TOKEN` must be set.
+- The deployed app only queries Qdrant. Website crawling is done offline, then
+  `scripts/ingest_folder.py` embeds the pages with Voyage AI (`VOYAGE_MODEL`,
+  `EMBEDDING_DIMENSION`) and uploads them. Queries use the same model, so
+  `VOYAGE_API_KEY` must be set wherever the app runs.
 - Behind a reverse proxy, run uvicorn with `--proxy-headers` and
   `--forwarded-allow-ips=<proxy ip>` so per-IP limits see the real client IP.
 - Customer sites must use HTTPS in production.

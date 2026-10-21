@@ -36,8 +36,10 @@ class Settings(BaseSettings):
     QDRANT_COLLECTION: str
 
     # --- Embeddings (app/services/embedding_service.py) --------------------
+    # Changing the model or dimension means rebuilding every Qdrant collection.
     VOYAGE_API_KEY: str
-    HF_TOKEN: str
+    VOYAGE_MODEL: str = "voyage-3.5"
+    EMBEDDING_DIMENSION: int = 1024
 
     # --- Django subscription verification (app/services/subscription_service.py)
     # Server-to-server only; DJANGO_SERVICE_API_KEY must match one of the

@@ -18,7 +18,7 @@ TEST_ENV = {
 }
 os.environ.update(TEST_ENV)
 for name in ("ANTHROPIC_API_KEY", "DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME",
-             "QDRANT_HOST", "QDRANT_COLLECTION", "VOYAGE_API_KEY", "HF_TOKEN"):
+             "QDRANT_HOST", "QDRANT_COLLECTION", "VOYAGE_API_KEY"):
     os.environ.setdefault(name, "test")
 os.environ.setdefault("QDRANT_PORT", "6333")
 

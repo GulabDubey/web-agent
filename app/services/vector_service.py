@@ -1,3 +1,4 @@
+from app.config.settings import settings
 from app.repositories.vector_repository import VectorRepository
 from app.services.embedding_service import EmbeddingService
 
@@ -14,7 +15,7 @@ class VectorService:
     def create_collection(
         self,
         collection: str,
-        vector_size: int = 1024
+        vector_size: int = settings.EMBEDDING_DIMENSION
     ):
 
         if not self.repository.collection_exists(collection):
