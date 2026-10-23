@@ -37,7 +37,9 @@ class KnowledgeAgent:
         Answer:
         """
 
-        response = self.llm.invoke(prompt)
+        # The website's configured model; the constructor's model is the fallback.
+        llm = state.get("llm") or self.llm
+        response = llm.invoke(prompt)
 
         return {
             **state,

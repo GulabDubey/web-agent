@@ -28,6 +28,7 @@ class WidgetContext:
     site_key: str
     domain: str
     session_id: str
+    visitor_id: str = ""
 
     @property
     def scoped_session_id(self):
@@ -131,6 +132,7 @@ async def resolve_widget_context(request: Request, claims: WidgetClaims):
         site_key=claims.site_key,
         domain=claims.domain,
         session_id=claims.session_id,
+        visitor_id=claims.visitor_id,
     )
 
 

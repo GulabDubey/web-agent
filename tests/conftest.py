@@ -28,8 +28,12 @@ class FakeGraph:
     def __init__(self):
         self.calls = []
 
+    error = None
+
     def invoke(self, state):
         self.calls.append(state)
+        if self.error is not None:
+            raise self.error
         return {**state, "answer": f"answer from {state['collection']}", "meta_data": None}
 
 
@@ -46,6 +50,8 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 from app.config.settings import settings  # noqa: E402
 from app.main import app  # noqa: E402
+from app.services.llm_config_service import llm_config_service  # noqa: E402
+from app.services.question_limit_service import question_limit_service  # noqa: E402
 from app.services.site_collection_service import site_collection_service  # noqa: E402
 from app.services.subscription_service import subscription_service  # noqa: E402
 
@@ -88,6 +94,61 @@ class FakeDjango:
         })
 
 
+class FakeDjangoLLM:
+    """Mock of Django's POST /api/internal/chatbot/llm-config/ (same contract)."""
+
+    def __init__(self):
+        self.calls = []
+        self.configs = {}  # site_id -> response JSON; missing = llm_not_configured
+        self.override = None
+
+    def handler(self, request):
+        body = json.loads(request.content)
+        self.calls.append({"auth": request.headers.get("Authorization"), "body": body, "url": str(request.url)})
+        if self.override is not None:
+            return self.override(request)
+        config = self.configs.get(body.get("site_id"))
+        if config is None:
+            return httpx.Response(404, json={"error": "llm_not_configured"})
+        return httpx.Response(200, json=config)
+
+
+class FakeDjangoQuestions:
+    """Mock of Django's questions/consume/ and questions/refund/ (same contract)."""
+
+    def __init__(self):
+        self.calls = []
+        self.limits = {}  # site_id -> limit (missing/0 = unlimited)
+        self.counts = {}  # (site_id, visitor_id) -> used
+        self.override = None
+
+    def handler(self, request):
+        body = json.loads(request.content)
+        action = request.url.path.rstrip("/").rsplit("/", 1)[-1]
+        self.calls.append({"action": action, "body": body, "auth": request.headers.get("Authorization"),
+                           "url": str(request.url)})
+        if self.override is not None:
+            return self.override(request)
+
+        key = (body["site_id"], body["visitor_id"])
+        limit = self.limits.get(body["site_id"], 0)
+        if action == "refund":
+            self.counts[key] = max(self.counts.get(key, 0) - 1, 0)
+            return httpx.Response(200, json={"refunded": True})
+        if not limit:
+            return httpx.Response(200, json={"allowed": True, "limit": 0, "remaining": None, "period": "day", "resets_at": None})
+        used = self.counts.get(key, 0)
+        if used >= limit:
+            return httpx.Response(200, json={
+                "allowed": False, "limit": limit, "remaining": 0, "period": "day",
+                "resets_at": "2099-01-01T00:00:00Z", "reason": "question_limit",
+                "message": "You have used all 2 questions for today.",
+            })
+        self.counts[key] = used + 1
+        return httpx.Response(200, json={"allowed": True, "limit": limit, "remaining": limit - used - 1,
+                                         "period": "day", "resets_at": "2099-01-01T00:00:00Z"})
+
+
 # Rows of django_app.websites_website by id (only the columns the app reads).
 django_websites = {}
 
@@ -104,11 +165,22 @@ def django():
     return FakeDjango()
 
 
+@pytest.fixture
+def django_llm():
+    return FakeDjangoLLM()
+
+
+@pytest.fixture
+def django_questions():
+    return FakeDjangoQuestions()
+
+
 @pytest.fixture(autouse=True)
-def isolate(django, monkeypatch):
+def isolate(django, django_llm, django_questions, monkeypatch):
     fake_redis.data.clear()
     fake_redis.expiry.clear()
     fake_graph.calls.clear()
+    fake_graph.error = None
     for name, value in TEST_ENV.items():
         monkeypatch.setattr(settings, name, value)
     django_websites.clear()
@@ -118,6 +190,9 @@ def isolate(django, monkeypatch):
     })
     monkeypatch.setattr(site_collection_service, "_fetch", fake_websites_fetch)
     monkeypatch.setattr(subscription_service, "_client", httpx.AsyncClient(transport=httpx.MockTransport(django.handler)))
+    monkeypatch.setattr(llm_config_service, "_client", httpx.AsyncClient(transport=httpx.MockTransport(django_llm.handler)))
+    llm_config_service.clear()
+    monkeypatch.setattr(question_limit_service, "_client", httpx.AsyncClient(transport=httpx.MockTransport(django_questions.handler)))
     yield
 
 

@@ -1,23 +1,12 @@
-from langchain_anthropic import ChatAnthropic
-from functools import lru_cache
-from app.config.settings import settings
+from app.llm.factory import env_llm_config, get_chat_model
 
 
-@lru_cache(maxsize=1)
-def get_llm(
-    model: str | None = None,
-    temperature: float = 0,
-) -> ChatAnthropic:
+def get_llm():
     """
-    Returns a singleton ChatAnthropic instance.
+    Chat model from this service's .env Anthropic settings.
+
+    Chatbot replies use the website's provider/model configured in Django
+    (see app/services/llm_config_service.py); this remains the fallback and
+    is used by internal tools that aren't tied to a website.
     """
-    return ChatAnthropic(
-        model=model or settings.ANTHROPIC_MODEL,
-        anthropic_api_key=settings.ANTHROPIC_API_KEY,
-        # Current models think before answering and that thinking counts
-        # toward max_tokens, so leave headroom or replies get cut off.
-        max_tokens=2048,
-        # Short support answers don't need deep reasoning; low effort keeps
-        # thinking (and latency/cost) minimal on every current model.
-        output_config={"effort": "low"},
-    )
+    return get_chat_model(env_llm_config())

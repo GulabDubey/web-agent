@@ -1,9 +1,13 @@
+import logging
+
 from app.core.exceptions import AppException
 from app.graph.chat_graph import graph
 
+logger = logging.getLogger(__name__)
+
 class ChatService:
 
-    async def generate_reply(self, message, collection):
+    async def generate_reply(self, message, collection, llm=None):
 
         if not message:
             raise AppException("Message can't be empty", 400)
@@ -14,12 +18,23 @@ class ChatService:
         state = {
             "message": message,
             "collection": collection,
+            "llm": llm,
             "route": "",
             "answer": "",
             "meta_data": None
         }
 
-        result = graph.invoke(state)
+        try:
+            result = graph.invoke(state)
+        except AppException:
+            raise
+        except Exception:
+            # Provider outages, bad keys or unknown models: log, show a generic message.
+            logger.exception("Chat generation failed")
+            raise AppException(
+                "The AI assistant is temporarily unavailable. Please try again shortly.", 502, code="llm_unavailable"
+            )
+        result.pop("llm", None)
         result["answer"] = self.answer_text(result.get("answer"))
 
         return {"reply": result}

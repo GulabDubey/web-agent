@@ -111,6 +111,28 @@ function createApiClient(BASE_URL, SITE_KEY) {
   let token = null;
   let refreshing = null;
 
+  // Anonymous visitor ID kept in this site's localStorage so the website's
+  // question limit applies per visitor across page loads. Not a secret: the
+  // server seals it into the signed widget token.
+  const VISITOR_KEY = "cnai_visitor_id";
+
+  function storedVisitorId() {
+    try {
+      return window.localStorage.getItem(VISITOR_KEY);
+    } catch (storageError) {
+      return null; // storage blocked (private mode, policies)
+    }
+  }
+
+  function rememberVisitorId(visitorId) {
+    if (!visitorId) return;
+    try {
+      window.localStorage.setItem(VISITOR_KEY, visitorId);
+    } catch (storageError) {
+      // Without storage each page load counts as a new visitor.
+    }
+  }
+
   async function readJson(response) {
     try {
       return await response.json();
@@ -142,11 +164,13 @@ function createApiClient(BASE_URL, SITE_KEY) {
       throw errorFrom(response, data);
     }
     token = data.data.token;
+    rememberVisitorId(data.data.visitor_id);
   }
 
   function startSession() {
+    const visitorId = storedVisitorId();
     return requestToken("/api/v1/widget/session", {
-      body: JSON.stringify({ site_key: SITE_KEY }),
+      body: JSON.stringify(visitorId ? { site_key: SITE_KEY, visitor_id: visitorId } : { site_key: SITE_KEY }),
     });
   }
 
@@ -186,7 +210,8 @@ function createApiClient(BASE_URL, SITE_KEY) {
       return { ok: true, message: data.data.message };
     }
 
-    return { ok: false, message: errorFrom(response, data).message };
+    const error = errorFrom(response, data);
+    return { ok: false, message: error.message, code: error.code };
   }
 
   return { startSession, post };
@@ -614,7 +639,10 @@ function initChatbot(root, api, config) {
 
   /* ---------------- Composer ---------------- */
 
+  let questionLimitReached = false;
+
   function enableComposer() {
+    if (questionLimitReached) return;
     chatInput.disabled = false;
     updateComposer();
     chatInput.focus();
@@ -786,6 +814,12 @@ function initChatbot(root, api, config) {
       typing.remove();
       if (result.ok) {
         addBotMessage(result.message);
+      } else if (result.code === "question_limit") {
+        // Retrying can't help until the limit resets.
+        addErrorMessage(result.message);
+        questionLimitReached = true;
+        chatInput.disabled = true;
+        chatInput.placeholder = "Question limit reached";
       } else {
         addErrorMessage(result.message, () => sendMessage(message, true));
       }

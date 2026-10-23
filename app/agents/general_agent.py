@@ -4,7 +4,7 @@ def general_agent(state):
 
     message = state["message"]
 
-    llm = get_llm()
+    llm = state.get("llm") or get_llm()
     response = llm.invoke(message)
 
     return {

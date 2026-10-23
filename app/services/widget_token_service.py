@@ -1,4 +1,5 @@
 import logging
+import re
 import secrets
 import time
 from dataclasses import dataclass
@@ -9,6 +10,9 @@ from app.config.settings import settings
 from app.core.exceptions import AppException
 
 logger = logging.getLogger(__name__)
+
+# Same rule as Django's question-limit endpoints.
+VISITOR_ID_RE = re.compile(r"^[A-Za-z0-9_-]{16,64}$")
 
 ALGORITHM = "HS256"
 MIN_SECRET_LENGTH = 32
@@ -22,6 +26,8 @@ class WidgetClaims:
     domain: str
     session_id: str
     expires_at: int
+    # Anonymous visitor (browser) the question limit is counted against.
+    visitor_id: str = ""
 
 
 class WidgetTokenService:
@@ -46,7 +52,15 @@ class WidgetTokenService:
     def new_session_id():
         return secrets.token_urlsafe(18)
 
-    def issue(self, site_id, customer_id, site_key, domain, session_id):
+    @staticmethod
+    def new_visitor_id():
+        return "v_" + secrets.token_urlsafe(18)
+
+    @staticmethod
+    def valid_visitor_id(value):
+        return isinstance(value, str) and bool(VISITOR_ID_RE.match(value))
+
+    def issue(self, site_id, customer_id, site_key, domain, session_id, visitor_id):
         now = int(time.time())
         expires_at = now + settings.WIDGET_TOKEN_TTL_SECONDS
         token = jwt.encode(
@@ -58,6 +72,7 @@ class WidgetTokenService:
                 "sk": site_key,
                 "dom": domain,
                 "sid": session_id,
+                "vid": visitor_id,
                 "iat": now,
                 "exp": expires_at,
             },
@@ -110,7 +125,9 @@ class WidgetTokenService:
         if not all(isinstance(value, str) and value for value in fields):
             raise AppException("Invalid widget token.", 401, code="token_invalid")
 
-        return WidgetClaims(*fields, expires_at=expires_at)
+        # Tokens issued before visitor IDs existed count per chat session.
+        visitor_id = claims.get("vid") if self.valid_visitor_id(claims.get("vid")) else fields[4]
+        return WidgetClaims(*fields, expires_at=expires_at, visitor_id=visitor_id)
 
 
 widget_token_service = WidgetTokenService()

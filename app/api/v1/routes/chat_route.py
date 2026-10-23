@@ -1,3 +1,4 @@
+from app.core.exceptions import AppException
 from fastapi import APIRouter, Depends, Request
 from app.config.settings import settings
 from app.core.widget_auth import WidgetContext, client_ip, require_widget
@@ -9,6 +10,8 @@ from app.services.validator_service import ValidatorService
 from app.core.response import ApiResponse
 from app.services.question_service import QuestionService
 from app.services.rate_limit_service import rate_limit_service
+from app.services.llm_config_service import llm_config_service
+from app.services.question_limit_service import question_limit_service
 from app.services.site_collection_service import site_collection_service
 
 router = APIRouter()
@@ -61,11 +64,26 @@ async def chat(request: ChatRequest, http_request: Request, widget: WidgetContex
 
     # Knowledge base of the verified site, read from Django's websites table.
     collection = await site_collection_service.collection_for(widget.site_id)
+    # The active LLM provider/model of this site in Django (Admin → Websites → AI model).
+    llm, _llm_config = await llm_config_service.model_for(widget.site_id)
 
-    rate_limit_service.acquire_slot("chat", widget.site_id, settings.WIDGET_MAX_CONCURRENT_PER_SITE)
+    # Per-visitor question limit (set on the website in Django). Counted last,
+    # so requests refused above never use up a visitor's questions.
+    ip = client_ip(http_request)
+    await question_limit_service.consume(widget.site_id, widget.visitor_id, ip)
+
+    try:
+        rate_limit_service.acquire_slot("chat", widget.site_id, settings.WIDGET_MAX_CONCURRENT_PER_SITE)
+    except AppException:
+        await question_limit_service.refund(widget.site_id, widget.visitor_id, ip)
+        raise
     try:
         chat_history_service.add(widget.scoped_session_id, "user", request.message)
-        result = await chat_service.generate_reply(request.message, collection)
+        result = await chat_service.generate_reply(request.message, collection, llm)
+    except Exception:
+        # No answer was given, so the question doesn't count.
+        await question_limit_service.refund(widget.site_id, widget.visitor_id, ip)
+        raise
     finally:
         rate_limit_service.release_slot("chat", widget.site_id)
 

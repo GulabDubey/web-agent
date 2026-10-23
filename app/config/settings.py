@@ -52,6 +52,20 @@ class Settings(BaseSettings):
     DJANGO_VERIFY_FAILURE_THRESHOLD: int = 5
     DJANGO_VERIFY_COOLDOWN_SECONDS: int = 30
 
+    # --- Per-website LLM provider (app/services/llm_config_service.py) ------
+    # Django's POST /api/internal/chatbot/llm-config/ (same service key).
+    # Empty = derived from DJANGO_SUBSCRIPTION_VERIFY_URL.
+    DJANGO_LLM_CONFIG_URL: str = ""
+    # Seconds a site's provider/model/key is reused before asking Django again
+    # (kept in process memory only - API keys never go to Redis).
+    LLM_CONFIG_CACHE_TTL_SECONDS: int = 60
+
+    # --- Per-visitor question limit (app/services/question_limit_service.py)
+    # Django's questions/consume/ and questions/refund/ endpoints (same service
+    # key). Empty = derived from DJANGO_SUBSCRIPTION_VERIFY_URL. The limit
+    # itself is set per website in the Django admin.
+    DJANGO_QUESTIONS_URL: str = ""
+
     # --- Django database, read-only (app/services/site_collection_service.py)
     # Each chat reads websites_website.collection_name for the verified site.
     # Host/user/password/port default to this app's DB_* values.
@@ -100,6 +114,23 @@ class Settings(BaseSettings):
     # --- Internal service endpoints (crawl/ingest/users) --------------------
     # Comma-separated bearer tokens; the Django CRAWLER_API_TOKEN must be one.
     INTERNAL_SERVICE_TOKENS: str = ""
+
+    @property
+    def questions_url(self) -> str:
+        """Base URL ending in "/questions/"; consume/ and refund/ are appended."""
+        if self.DJANGO_QUESTIONS_URL:
+            return self.DJANGO_QUESTIONS_URL.rstrip("/") + "/"
+        if self.DJANGO_SUBSCRIPTION_VERIFY_URL.endswith("/verify-subscription/"):
+            return self.DJANGO_SUBSCRIPTION_VERIFY_URL[: -len("verify-subscription/")] + "questions/"
+        return ""
+
+    @property
+    def llm_config_url(self) -> str:
+        if self.DJANGO_LLM_CONFIG_URL:
+            return self.DJANGO_LLM_CONFIG_URL
+        if self.DJANGO_SUBSCRIPTION_VERIFY_URL.endswith("/verify-subscription/"):
+            return self.DJANGO_SUBSCRIPTION_VERIFY_URL[: -len("verify-subscription/")] + "llm-config/"
+        return ""
 
     @property
     def is_development(self) -> bool:

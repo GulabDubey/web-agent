@@ -8,6 +8,8 @@ from app.middleware.logging import LoggingMiddleware
 from app.middleware.timer import TimerMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from app.services.llm_config_service import llm_config_service
+from app.services.question_limit_service import question_limit_service
 from app.services.subscription_service import subscription_service
 
 app = FastAPI(
@@ -72,6 +74,8 @@ app.include_router(api_v1_router, prefix="/api/v1")
 @app.on_event("shutdown")
 async def close_http_clients():
     await subscription_service.aclose()
+    await llm_config_service.aclose()
+    await question_limit_service.aclose()
 
 
 @app.exception_handler(AppException)
